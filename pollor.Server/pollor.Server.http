@@ -1,0 +1,6 @@
+@pollor.Server_HostAddress = http://localhost:5010
+
+GET {{pollor.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
