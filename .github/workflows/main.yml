@@ -47,6 +47,13 @@ jobs:
         with:
           name: .net-app
       
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.__clientidsecretname__ }}
+          tenant-id: ${{ secrets.__tenantidsecretname__ }}
+          subscription-id: ${{ secrets.__subscriptionidsecretname__ }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -54,4 +61,3 @@ jobs:
           app-name: 'pollor'
           slot-name: 'production'
           package: .
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_12b9b4d41b924b1ca49f0f7ab227abef }}
