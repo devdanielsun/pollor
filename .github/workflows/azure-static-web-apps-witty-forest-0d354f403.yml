@@ -1,5 +1,10 @@
 name: Azure Static Web Apps CI/CD
 
+env:
+  APP_LOCATION: "/pollor.client" # location of your client code
+  API_LOCATION: "" # location of your api source code - optional
+  OUTPUT_LOCATION: "dist/pollor.client" # location of client code build output
+
 on:
   push:
     branches:
