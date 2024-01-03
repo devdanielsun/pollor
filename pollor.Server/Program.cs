@@ -6,7 +6,7 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("https://localhost:4200",
-                "*" // temperary accept everything - todo: add env vars and replace with dynamic list of domains
+                "https://pollor.nl/" // todo: add env vars and replace with dynamic list of domains
                 );
             // Todo: add env variable as list of domains
         });
