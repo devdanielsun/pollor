@@ -34,7 +34,10 @@ jobs:
           api_location: ${{ vars.API_LOCATION }} # Api source code path - optional
           output_location: ${{ vars.OUTPUT_LOCATION }} # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
-
+          ###### Angular Environment Variables ######
+          API_URL: ${{ vars.BACKEND_API_URL }}
+          ###### End of Angular Environment Variables ######
+          
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
