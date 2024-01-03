@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from './services/api.service';
+import { environment } from '../environments/environment';
 
 interface WeatherForecast {
   date: string;
@@ -14,23 +15,23 @@ interface WeatherForecast {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+  public appVersion: String = environment.appVersion;
+  public baseApiUrl: String = this.apiService.getBaseUrl();
   public forecasts: WeatherForecast[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     this.getForecasts();
   }
 
   getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    this.apiService.get<WeatherForecast[]>('weatherforecast')
+      .subscribe({
+        next: (response) => this.forecasts = response,
+        error: (error) => console.error(error),
+        //complete: () => { }
+      });
   }
 
   title = 'pollor.client';
