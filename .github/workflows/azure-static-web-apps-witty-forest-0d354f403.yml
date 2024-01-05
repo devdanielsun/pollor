@@ -1,4 +1,4 @@
-name: (pollor.Client)  Build and deploy Angular app to Azure Static Web App
+name: (pollor.Client) Angular app to Azure Static Web App
 
 on:
   push:
