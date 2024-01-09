@@ -1,6 +1,8 @@
+using System.Data;
+
 namespace pollor.Server.Model
 {
-    public class SuperModel
+    public class SuperModel : DataSet
     {
         public int id { get; set; }
 

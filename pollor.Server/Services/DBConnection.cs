@@ -1,4 +1,7 @@
+using System.ComponentModel;
+using FastMember;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 
 namespace pollor.Server.Service
 {
@@ -57,6 +60,57 @@ namespace pollor.Server.Service
         public void Close()
         {
             Connection.Close();
-        }        
+        }     
+
+        public static T ConvertToObject<T>(MySqlDataReader rd) where T : class, new()
+        {
+            Type type = typeof(T);
+            var accessor = TypeAccessor.Create(type);
+            var members = accessor.GetMembers();
+            var t = new T();
+
+            for (int i = 0; i < rd.FieldCount; i++)
+            {
+                if (!rd.IsDBNull(i))
+                {
+                    string fieldName = rd.GetName(i);
+
+                    if (members.Any(m => string.Equals(m.Name, fieldName, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        accessor[t, fieldName] = rd.GetValue(i);
+                    }
+                }
+            }
+
+            return t;
+        }   
+
+        public T RunSelectQuery<T>(Type type, string query)
+        {
+            try // implement proper error handling
+            {
+                this.IsConnect();
+                MySqlCommand cmd = new MySqlCommand(query, Connection);
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                ConvertToObject<T>(rdr);
+                using MySqlDataReader rdr = cmd.ExecuteReader();
+                Console.WriteLine($"{rdr.GetName(0),-4} {rdr.GetName(1),-10} {rdr.GetName(2),10}");
+
+                while (rdr.Read())
+                {
+                    rdr.
+                    Console.WriteLine($"{rdr.GetInt32(0),-4} {rdr.GetString(1),-10} {rdr.GetInt32(2),10}");
+                }
+
+            }
+            catch(Exception ex)
+            {
+                // error here
+                Console.WriteLine(ex.ToString());
+                throw new WarningException(ex.ToString());
+
+            }
+            return data;
+        }
     }
 }
