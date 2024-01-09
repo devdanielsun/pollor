@@ -2,14 +2,15 @@ using pollor.Server.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load .env
+/* Load .env */
 var root = Directory.GetCurrentDirectory();
 var dotenv = Path.Combine(root, ".env");
 DotEnv.Load(dotenv);
 
-// get .env value
-String[] corsDomains = Environment.GetEnvironmentVariable("ACCEPTED_CORS_DOMAINS").Split(',');
+/* get .env value */
+String[] corsDomains = Environment.GetEnvironmentVariable("ACCEPTED_CORS_DOMAINS")!.Split(',');
 
+/* If values are null or empty, give error message that values are missing in .env */
 if(corsDomains == null || corsDomains.Length == 0 || String.IsNullOrEmpty(corsDomains[0])) {
     throw new InvalidOperationException("corsDomains contains no elements. Make sure ACCEPTED_CORS_DOMAINS is set in .env");
 }
@@ -23,6 +24,9 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(corsDomains); // add .env string[] to CORS policy
         });
 });
+
+/* Load Database */
+var dbCon = DBConnection.Instance();
 
 // Add services to the container.
 
