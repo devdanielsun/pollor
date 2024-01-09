@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using pollor.Server.Model;
 
 namespace pollor.Server.Controllers
 {
