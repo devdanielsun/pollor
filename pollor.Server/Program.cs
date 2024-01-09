@@ -6,7 +6,7 @@ var dotenv = Path.Combine(root, ".env");
 DotEnv.Load(dotenv);
 
 // get .env value
-String[] corsDomains = Environment.GetEnvironmentVariable("ACCEPTED_CORS_DOMAINS")?.Split(',');
+String[] corsDomains = Environment.GetEnvironmentVariable("ACCEPTED_CORS_DOMAINS").Split(',');
 
 if(corsDomains == null || corsDomains.Length == 0 || String.IsNullOrEmpty(corsDomains[0])) {
     throw new InvalidOperationException("corsDomains contains no elements. Make sure ACCEPTED_CORS_DOMAINS is set in .env");
