@@ -1,3 +1,5 @@
+using pollor.Server.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Load .env

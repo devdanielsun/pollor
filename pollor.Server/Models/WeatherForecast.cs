@@ -1,4 +1,4 @@
-namespace pollor.Server
+namespace pollor.Server.Model
 {
     public class WeatherForecast
     {
