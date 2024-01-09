@@ -18,6 +18,9 @@ Clone the project and open the folder in the program. And just hit `> Start`
 
 ### Start project manually through CLI
 
-Please read the [Backend README.md](/pollor.Server/README.md) to start up the C# .NET backend
+Make sure the .env files are made and contain the correct values, and the mysql database is running.
+Next to that those two commands should be enough the start both the server and client.
 
-Please read the [Frontend README.md](/pollor.client/README.md) to start up the Angular frontend
+ 1. `cd pollor.Server`
+
+ 2. `dotnet run --launch-profile https`
