@@ -21,7 +21,7 @@ namespace pollor.Server.Services
             if (isDevelopment) {
                 connectionString = string.Format("Server={0};Initial Catalog={1};Integrated Security={2};TrustServerCertificate={3}", dbServer, dbName, true, true);
             } else { // Production
-                connectionString = string.Format("Server={0};Initial Catalog={1};User ID={2};Password={3};Persist Security Info={4};TrustServerCertificate={5};MultipleActiveResultSets={6};Encrypt={7};Connection Timeout={8}",
+                connectionString = string.Format("Server={0};Initial Catalog={1};User ID={2};Password={3};Persist Security Info={4};TrustServerCertificate={5};MultipleActiveResultSets={6};Encrypt={7};Connection Timeout={8};",
                     dbServer, dbName, dbUID, dbPassword, false, false, false, true, 30);
             }
         }
