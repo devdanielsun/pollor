@@ -15,6 +15,10 @@ export class PollsComponent {
   public answers: IAnswers[] = [];
   public votes: IVotes[] = [];
 
+  public pollsLoaded: boolean = false;
+  public answersLoaded: boolean = false;
+  public votesLoaded: boolean = false;
+
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -26,7 +30,10 @@ export class PollsComponent {
   getPolls() {
     this.apiService.get<IPolls[]>('polls')
       .subscribe({
-        next: (response) => this.polls = response,
+        next: (response) => {
+          this.polls = response;
+          this.pollsLoaded = true;
+        },
         error: (error) => console.error(error),
         //complete: () => { }
       });
@@ -35,7 +42,10 @@ export class PollsComponent {
   getAnswers() {
     this.apiService.get<IAnswers[]>('answers')
       .subscribe({
-        next: (response) => this.answers = response,
+        next: (response) => {
+          this.answers = response;
+          this.answersLoaded = true;
+        },
         error: (error) => console.error(error),
         //complete: () => { }
       });
@@ -44,7 +54,10 @@ export class PollsComponent {
   getVotes() {
     this.apiService.get<IVotes[]>('votes')
       .subscribe({
-        next: (response) => this.votes = response,
+        next: (response) => {
+          this.votes = response;
+          this.votesLoaded = true;
+        },
         error: (error) => console.error(error),
         //complete: () => { }
       });
