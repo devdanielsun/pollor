@@ -19,18 +19,36 @@ namespace answeror.Server.Controllers
         public List<AnswerModel> GetAllAnswers()
         {
             string query_answers = string.Format("SELECT * FROM answers");
-            return DBConnection.Instance().Query<AnswerModel>(query_answers).ToList();
+            try
+            {
+                return DBConnection.Instance().Query<AnswerModel>(query_answers).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            return null;
         }
 
         [HttpGet("{id}")]
         public AnswerModel GetAnswerById(int id)
         {
             string answerByIdQuery = string.Format("SELECT * FROM answers WHERE id = @answerId");
-            AnswerModel answer = DBConnection.Instance().QueryById<AnswerModel>(answerByIdQuery, "@answerId", id);
-            //if (answer == null) {
-            //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Answers/{Id}) NOT FOUND", id);
-            //}
-            return answer;
+            try
+            {
+                AnswerModel answer = DBConnection.Instance().QueryById<AnswerModel>(answerByIdQuery, "@answerId", id);
+                //if (answer == null) {
+                //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Answers/{Id}) NOT FOUND", id);
+                //}
+                return answer;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            return null;
         }
     }
 }
