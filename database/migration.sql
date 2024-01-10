@@ -1,66 +1,68 @@
--- mysql
-CREATE TABLE IF NOT EXISTS users (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `emailaddress` VARCHAR(256) NOT NULL,
-  `first_name` VARCHAR(64) NOT NULL,
-  `last_name` VARCHAR(64) NOT NULL,
-  `profile_username` VARCHAR(64) NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
-);
+USE [pollor-db]
+GO
 
-CREATE TABLE IF NOT EXISTS polls (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `question` VARCHAR(512) NOT NULL,
-  `ending_date` DATETIME NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `polls_user_id_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `polls_user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES users (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+/****** Object: Table [dbo].[users]
+				Table [dbo].[polls]
+				Table [dbo].[answers]
+				Table [dbo].[votes]			Script Date: 10 Jan 2024 10:34:37 ******/
+SET ANSI_NULLS ON
+GO
 
-CREATE TABLE IF NOT EXISTS answers (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `poll_id` INT NOT NULL,
-  `poll_answer` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `answers_poll_id_idx` (`poll_id` ASC) VISIBLE,
-  CONSTRAINT `answers_poll_id`
-    FOREIGN KEY (`poll_id`)
-    REFERENCES polls (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+SET QUOTED_IDENTIFIER ON
+GO
 
-CREATE TABLE IF NOT EXISTS votes (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `poll_id` INT NOT NULL,
-  `answer_id` INT NOT NULL,
-  `ipv4_address` INT UNSIGNED NULL,
-  `ipv6_address` BINARY(16) NULL,
-  `mac_address` BIGINT(8) UNSIGNED NULL,
-  `voted_at` DATETIME NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `votes_poll_id_idx` (`poll_id` ASC) VISIBLE,
-  INDEX `votes_answer_id_idx` (`answer_id` ASC) VISIBLE,
-  CONSTRAINT `votes_poll_id`
-    FOREIGN KEY (`poll_id`)
-    REFERENCES polls (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `votes_answer_id`
-    FOREIGN KEY (`answer_id`)
-    REFERENCES answers (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-);
+CREATE TABLE [dbo].[users](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[emailaddress] [nvarchar](256) NOT NULL,
+	[first_name] [nvarchar](64) NOT NULL,
+	[last_name] [nvarchar](64) NOT NULL,
+	[profile_username] [nvarchar](64) NOT NULL,
+	[created_at] [datetime] NOT NULL,
+	CONSTRAINT PK_users PRIMARY KEY NONCLUSTERED (id)
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[polls](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[user_id] [int] NOT NULL,
+	[question] [nvarchar](512) NOT NULL,
+	[ending_date] [datetime] NOT NULL,
+	[created_at] [datetime] NOT NULL,
+	CONSTRAINT PK_polls PRIMARY KEY NONCLUSTERED (id),
+	CONSTRAINT FK_poll_user FOREIGN KEY (user_id)
+      REFERENCES users (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+) ON [PRIMARY]
+
+GO
+
+
+CREATE TABLE [dbo].[answers](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[poll_id] [int] NOT NULL,
+	[poll_answer] [nvarchar](256) NOT NULL,
+	CONSTRAINT PK_answers PRIMARY KEY NONCLUSTERED (id),
+	CONSTRAINT FK_answer_poll FOREIGN KEY (poll_id)
+      REFERENCES polls (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[votes](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[answer_id] [int] NOT NULL,
+	[ipv4_address] [varbinary](4) NULL,
+	[ipv6_address] [varbinary](16) NULL,
+	[mac_address] [char](12) NULL,
+	[voted_at] [datetime] NOT NULL,
+	[created_at] [datetime] NOT NULL,
+	CONSTRAINT PK_votes PRIMARY KEY NONCLUSTERED (id),
+	CONSTRAINT FK_vote_answer FOREIGN KEY (answer_id)
+      REFERENCES answers (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+) ON [PRIMARY]
+GO
+
