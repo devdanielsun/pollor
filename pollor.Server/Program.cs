@@ -1,4 +1,4 @@
-using pollor.Server.Service;
+using pollor.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

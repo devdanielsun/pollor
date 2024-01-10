@@ -1,4 +1,4 @@
-namespace pollor.Server.Service
+namespace pollor.Server.Services
 {
     public static class DotEnv
     {
