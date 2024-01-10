@@ -29,6 +29,7 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_UID: ${{ secrets.DB_UID }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
