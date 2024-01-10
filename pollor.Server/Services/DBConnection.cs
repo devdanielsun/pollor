@@ -1,5 +1,4 @@
 using Dapper;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Data.SqlClient;
 using static Dapper.SqlMapper;
 
@@ -43,16 +42,9 @@ namespace pollor.Server.Services
         */
         public IEnumerable<T> Query<T>(string query)
         {
-
             using (var _connection = new SqlConnection(connectionString))
             {
-                try
-                {
-                    return _connection.Query<T>(query);
-                }
-                catch (Exception ex) {
-                    throw new Exception(ex.Message);
-                }
+                return _connection.Query<T>(query);
             }
         }
 
@@ -66,16 +58,9 @@ namespace pollor.Server.Services
 
             using (var _connection = new SqlConnection(connectionString))
             {
-                try
-                {
-                    DynamicParameters param = new DynamicParameters();
-                    param.Add(whereClass, id);
-                    return _connection.QueryFirstOrDefault<T>(query, param);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
+                DynamicParameters param = new DynamicParameters();
+                param.Add(whereClass, id);
+                return _connection.QueryFirstOrDefault<T>(query, param);
             }
         }
     }

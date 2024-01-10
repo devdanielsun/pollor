@@ -19,18 +19,36 @@ namespace pollor.Server.Controllers
         public List<VoteModel> GetAllVotes()
         {
             string query_votes = string.Format("SELECT * FROM votes");
-            return DBConnection.Instance().Query<VoteModel>(query_votes).ToList();
+            try
+            {
+                return DBConnection.Instance().Query<VoteModel>(query_votes).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            return null;
         }
 
         [HttpGet("{id}")]
         public VoteModel GetVoteById(int id)
         {
             string voteByIdQuery = string.Format("SELECT * FROM votes WHERE id = @voteId");
-            VoteModel vote = DBConnection.Instance().QueryById<VoteModel>(voteByIdQuery, "@voteId", id);
-            //if (vote == null) {
-            //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Votes/{Id}) NOT FOUND", id);
-            //}
-            return vote;
+            try
+            {
+                VoteModel vote = DBConnection.Instance().QueryById<VoteModel>(voteByIdQuery, "@voteId", id);
+                //if (vote == null) {
+                //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Votes/{Id}) NOT FOUND", id);
+                //}
+                return vote;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            return null;
         }
     }
 }

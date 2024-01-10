@@ -19,18 +19,35 @@ namespace pollor.Server.Controllers
         public List<UserModel> GetAllUsers()
         {
             string query_users = string.Format("SELECT * FROM users");
-            return DBConnection.Instance().Query<UserModel>(query_users).ToList();
+            try
+            {
+                return DBConnection.Instance().Query<UserModel>(query_users).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            return null;
         }
 
         [HttpGet("{id}")]
         public UserModel GetUserById(int id)
         {
             string userByIdQuery = string.Format("SELECT * FROM users WHERE id = @userId");
-            UserModel user = DBConnection.Instance().QueryById<UserModel>(userByIdQuery, "@userId", id);
-            //if (user == null) {
-            //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Users/{Id}) NOT FOUND", id);
-            //}
+            try {
+                UserModel user = DBConnection.Instance().QueryById<UserModel>(userByIdQuery, "@userId", id);
+                //if (user == null) {
+                //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Users/{Id}) NOT FOUND", id);
+                //}
             return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            return null;
         }
     }
 }
