@@ -13,10 +13,13 @@ namespace pollor.Server.Services
         {
             string dbServer = Environment.GetEnvironmentVariable("DB_SERVER")!;
             string dbName = Environment.GetEnvironmentVariable("DB_NAME")!;
+            string dbUID = Environment.GetEnvironmentVariable("DB_UID")!;
+            string dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD")!;
             string dbIntegratedSecurity = Environment.GetEnvironmentVariable("DB_INTEGRATEDSECURITY")!;
             string dbTrustServerCertificate = Environment.GetEnvironmentVariable("DB_TRUSTSERVERCERT")!;
 
-            connectionString = string.Format("Server={0};Initial Catalog={1};Integrated Security={2};TrustServerCertificate={3}", dbServer, dbName, dbIntegratedSecurity, dbTrustServerCertificate);
+            //connectionString = string.Format("Server={0};Initial Catalog={1};Integrated Security={2};TrustServerCertificate={3}", dbServer, dbName, dbIntegratedSecurity, dbTrustServerCertificate);
+            connectionString = string.Format("Server={0};Database={1};UID={2};PWD={3};Integrated Security={4};TrustServerCertificate={5}", dbServer, dbName, dbUID, dbPassword, dbIntegratedSecurity, dbTrustServerCertificate);
         }
 
         public static DBConnection Instance()

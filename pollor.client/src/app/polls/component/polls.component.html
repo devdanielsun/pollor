@@ -2,9 +2,11 @@
 
 <h3 id="tableLabel" text-right>Polls</h3>
 
-<p *ngIf="!polls"><em>Loading POLLS...</em></p>
+<p *ngIf="!polls || polls == []"><em>Loading POLLS...</em></p>
 
-<table *ngIf="polls"  class="table">
+<p *ngIf="!polls || polls.length == 0"><em>no poll data found</em></p>
+
+<table *ngIf="polls && polls.length > 0" class="table">
   <thead>
     <tr>
       <th scope="col">Poll id</th>
@@ -28,9 +30,11 @@
 
 <h3 id="tableLabel" text-right>All unsorted Answers</h3>
 
-<p *ngIf="!answers"><em>Loading ANSWERS...</em></p>
+<p *ngIf="!answers || answers == []"><em>Loading ANSWERS...</em></p>
 
-<table *ngIf="answers" class="table">
+<p *ngIf="!answers || answers.length == 0"><em>no ANSWERS found in database...</em></p>
+
+<table *ngIf="answers && answers.length > 0" class="table">
   <thead>
     <tr>
       <th scope="col">Answers id</th>
@@ -53,9 +57,12 @@
 
 <h3 id="tableLabel" text-right>All unsorted Votes</h3>
 
-<p *ngIf="!votes"><em>Loading VOTES...</em></p>
+<p *ngIf="!votes || votes == []"><em>Loading VOTES...</em></p>
 
-<table *ngIf="votes"  class="table">
+<p *ngIf="!votes || votes.length == 0"><em>no VOTES found in database...</em></p>
+
+
+<table *ngIf="votes && votes.length > 0" class="table">
   <thead>
     <tr>
       <th scope="col">Vote id</th>

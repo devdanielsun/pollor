@@ -21,7 +21,6 @@ export class PollsComponent {
     this.getPolls();
     this.getAnswers();
     this.getVotes();
-
   }
 
   getPolls() {
