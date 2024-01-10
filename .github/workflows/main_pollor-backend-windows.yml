@@ -34,9 +34,15 @@ jobs:
           ACCEPTED_CORS_DOMAINS: ${{ vars.ACCEPTED_CORS_DOMAINS }}
           ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
 
-
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        env:
+          DB_SERVER: ${{ secrets.DB_SERVER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_UID: ${{ secrets.DB_UID }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          ACCEPTED_CORS_DOMAINS: ${{ vars.ACCEPTED_CORS_DOMAINS }}
+          ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -59,7 +65,14 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v2        
+        env:
+          DB_SERVER: ${{ secrets.DB_SERVER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_UID: ${{ secrets.DB_UID }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          ACCEPTED_CORS_DOMAINS: ${{ vars.ACCEPTED_CORS_DOMAINS }}
+          ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
         with:
           app-name: 'pollor-backend-windows'
           slot-name: 'Production'
