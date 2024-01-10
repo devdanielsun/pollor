@@ -1,11 +1,6 @@
-using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using pollor.Server.Models;
 using pollor.Server.Services;
-using System.Data;
-using System.Numerics;
 
 namespace pollor.Server.Controllers
 {
@@ -21,11 +16,10 @@ namespace pollor.Server.Controllers
         }
 
         [HttpGet(Name = "GetUsersController")]
-        public List<UserModel> GeAllUsers()
+        public List<UserModel> GetAllUsers()
         {
-            string userByIdQuery = string.Format("SELECT * FROM users");
-            List<UserModel> users = DBConnection.Instance().Query<UserModel>(userByIdQuery).ToList();
-            return users;
+            string query_users = string.Format("SELECT * FROM users");
+            return DBConnection.Instance().Query<UserModel>(query_users).ToList();
         }
 
         [HttpGet("{id}")]
@@ -34,7 +28,7 @@ namespace pollor.Server.Controllers
             string userByIdQuery = string.Format("SELECT * FROM users WHERE id = @userId");
             UserModel user = DBConnection.Instance().QueryById<UserModel>(userByIdQuery, "@userId", id);
             //if (user == null) {
-            //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(User/{Id}) NOT FOUND", id);
+            //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Users/{Id}) NOT FOUND", id);
             //}
             return user;
         }
