@@ -46,7 +46,13 @@ namespace pollor.Server.Services
 
             using (var _connection = new SqlConnection(connectionString))
             {
-                return _connection.Query<T>(query);
+                try
+                {
+                    return _connection.Query<T>(query);
+                }
+                catch (Exception ex) {
+                    throw new Exception(ex.Message);
+                }
             }
         }
 
@@ -60,9 +66,16 @@ namespace pollor.Server.Services
 
             using (var _connection = new SqlConnection(connectionString))
             {
-                DynamicParameters param = new DynamicParameters();
-                param.Add(whereClass, id);
-                return _connection.QueryFirstOrDefault<T>(query, param);
+                try
+                {
+                    DynamicParameters param = new DynamicParameters();
+                    param.Add(whereClass, id);
+                    return _connection.QueryFirstOrDefault<T>(query, param);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
         }
     }
