@@ -1,4 +1,5 @@
 using Dapper;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Data.SqlClient;
 using static Dapper.SqlMapper;
 
@@ -15,11 +16,14 @@ namespace pollor.Server.Services
             string dbName = Environment.GetEnvironmentVariable("DB_NAME")!;
             string dbUID = Environment.GetEnvironmentVariable("DB_UID")!;
             string dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD")!;
-            string dbIntegratedSecurity = Environment.GetEnvironmentVariable("DB_INTEGRATEDSECURITY")!;
-            string dbTrustServerCertificate = Environment.GetEnvironmentVariable("DB_TRUSTSERVERCERT")!;
 
-            //connectionString = string.Format("Server={0};Initial Catalog={1};Integrated Security={2};TrustServerCertificate={3}", dbServer, dbName, dbIntegratedSecurity, dbTrustServerCertificate);
-            connectionString = string.Format("Server={0};Database={1};UID={2};PWD={3};Integrated Security={4};TrustServerCertificate={5}", dbServer, dbName, dbUID, dbPassword, dbIntegratedSecurity, dbTrustServerCertificate);
+            bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+            if (isDevelopment) {
+                connectionString = string.Format("Server={0};Initial Catalog={1};Integrated Security={2};TrustServerCertificate={3}", dbServer, dbName, true, true);
+            } else { // Production
+                connectionString = string.Format("Server={0};Initial Catalog={1};User ID={2};Password={3};Persist Security Info={4};TrustServerCertificate={5};MultipleActiveResultSets={6};Encrypt={7};Connection Timeout={8}",
+                    dbServer, dbName, dbUID, dbPassword, false, false, false, true, 30);
+            }
         }
 
         public static DBConnection Instance()
