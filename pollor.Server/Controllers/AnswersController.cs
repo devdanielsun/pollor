@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using pollor.Server.Services;
 using pollor.Server.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace answeror.Server.Controllers
 {
@@ -16,39 +18,44 @@ namespace answeror.Server.Controllers
         }
 
         [HttpGet(Name = "GetAnswersController")]
-        public List<AnswerModel> GetAllAnswers()
+        public IActionResult GetAllAnswers()
         {
-            string query_answers = string.Format("SELECT * FROM answers");
-            try
-            {
-                return DBConnection.Instance().Query<AnswerModel>(query_answers).ToList();
+            try {
+                using (var context = new PollorDbContext()) {
+                    List<AnswerModel> answers = context.Answers
+                        .Include(a => a.Votes)
+                        .ToList();
+                    if (answers.IsNullOrEmpty()) {
+                        return NotFound();
+                    }
+                    return Ok(answers);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-
-            return null;
         }
 
         [HttpGet("{id}")]
-        public AnswerModel GetAnswerById(int id)
+        public IActionResult GetAnswerById(int id)
         {
-            string answerByIdQuery = string.Format("SELECT * FROM answers WHERE id = @answerId");
-            try
-            {
-                AnswerModel answer = DBConnection.Instance().QueryById<AnswerModel>(answerByIdQuery, "@answerId", id);
-                //if (answer == null) {
-                //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Answers/{Id}) NOT FOUND", id);
-                //}
-                return answer;
+            try {
+                using (var context = new PollorDbContext()) {
+                    AnswerModel? answer = context.Answers
+                        .Where(p => p.Id.Equals(id))
+                        .Include(a => a.Votes)
+                        .FirstOrDefault();
+                    if (answer == null) {
+                        return NotFound();
+                    }
+                    return Ok(answer);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-
-            return null;
         }
     }
 }

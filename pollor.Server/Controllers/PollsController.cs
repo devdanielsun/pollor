@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using pollor.Server.Models;
 using pollor.Server.Services;
 
@@ -17,37 +19,46 @@ namespace pollor.Server.Controllers
         }
 
         [HttpGet(Name = "GetPollsController")]
-        public List<PollModel> GetAllPolls()
+        public IActionResult GetAllPolls()
         {
-            string query_polls = string.Format("SELECT * FROM polls");
             try {
-                return DBConnection.Instance().Query<PollModel>(query_polls).ToList();
+                using (var context = new PollorDbContext()) {
+                    List<PollModel> polls = context.Polls
+                        .Include(p => p.Answers)
+                            .ThenInclude(a => a.Votes)
+                        .ToList();
+                    if (polls.IsNullOrEmpty()) {
+                        return NotFound();
+                    }
+                    return Ok(polls);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-            return null;
         }
 
         [HttpGet("{id}")]
-        public PollModel GetPollById(int id)
+        public IActionResult GetPollById(int id)
         {
-            string pollByIdQuery = string.Format("SELECT * FROM polls WHERE id = @pollId");
-            try
-            {
-                PollModel poll = DBConnection.Instance().QueryById<PollModel>(pollByIdQuery, "@pollId", id);
-                //if (poll == null) {
-                //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Polls/{Id}) NOT FOUND", id);
-                //}
-                return poll;
+            try {
+                using (var context = new PollorDbContext()) {
+                    PollModel? poll = context.Polls
+                        .Where(p => p.Id.Equals(id))
+                        .Include(p => p.Answers)
+                            .ThenInclude(a => a.Votes)
+                        .FirstOrDefault();
+                    if (poll == null) {
+                        return NotFound();
+                    }
+                    return Ok(poll);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-
-            return null;
         }
     }
 }
