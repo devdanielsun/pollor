@@ -1,4 +1,4 @@
-USE [pollor-db]
+USE [pollor_db]
 GO
 
 /****** Object: Table [dbo].[users]
@@ -42,6 +42,7 @@ CREATE TABLE [dbo].[answers](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[poll_id] [int] NOT NULL,
 	[poll_answer] [nvarchar](256) NOT NULL,
+	[created_at] [datetime] NOT NULL,
 	CONSTRAINT PK_answers PRIMARY KEY NONCLUSTERED (id),
 	CONSTRAINT FK_answer_poll FOREIGN KEY (poll_id)
       REFERENCES polls (id)

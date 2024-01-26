@@ -6,11 +6,12 @@
 
 <p *ngIf="pollsLoaded && polls.length == 0"><em>no poll data found</em></p>
 
-<table *ngIf="polls && polls.length > 0" class="table">
+<table *ngIf="polls && polls.length > 0" class="table table-sm table-bordered table-hover">
   <thead>
     <tr>
       <th scope="col">Poll id</th>
       <th scope="col">Poll Question</th>
+      <th scope="col">Poll Answers</th>
       <th scope="col">Poll ending date</th>
       <th scope="col">Created at</th>
     </tr>
@@ -19,68 +20,30 @@
     <tr *ngFor="let poll of polls">
       <td scope="row">{{ poll.id }}</td>
       <td>{{ poll.question }}</td>
+      <td>
+        
+        <table *ngIf="poll.answers.length > 0" class="table table-sm table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Answer id</th>
+              <th scope="col">Answer</th>
+              <th scope="col">Votes</th>
+              <th scope="col">Created at</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let answer of poll.answers">
+              <td scope="row">{{ answer.id }}</td>
+              <td>{{ answer.poll_answer }}</td>
+              <td>{{ answer.votes.length }}</td>
+              <td>{{ answer.created_at }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+
       <td>{{ poll.ending_date }}</td>
       <td>{{ poll.created_at }}</td>
-    </tr>
-  </tbody>
-</table>
-
-<br />
-<br />
-
-<h3 id="tableLabel" text-right>All unsorted Answers</h3>
-
-<p *ngIf="!answersLoaded"><em>Loading ANSWERS...</em></p>
-
-<p *ngIf="answersLoaded && answers.length == 0"><em>no ANSWERS found in database...</em></p>
-
-<table *ngIf="answers && answers.length > 0" class="table">
-  <thead>
-    <tr>
-      <th scope="col">Answers id</th>
-      <th scope="col">FK Poll id</th>
-      <th scope="col">Answser for the poll</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let answer of answers">
-      <td scope="row">{{ answer.id }}</td>
-      <td>{{ answer.poll_id }}</td>
-      <td>{{ answer.poll_answer }}</td>
-    </tr>
-  </tbody>
-</table>
-
-<br />
-<br />
-
-
-<h3 id="tableLabel" text-right>All unsorted Votes</h3>
-
-<p *ngIf="!votesLoaded"><em>Loading VOTES...</em></p>
-
-<p *ngIf="votesLoaded && votes.length == 0"><em>no VOTES found in database...</em></p>
-
-
-<table *ngIf="votes && votes.length > 0" class="table">
-  <thead>
-    <tr>
-      <th scope="col">Vote id</th>
-      <th scope="col">FK Answer id</th>
-      <th scope="col">ipv4 address</th>
-      <th scope="col">ipv6 address</th>
-      <th scope="col">Mac Address</th>
-      <th scope="col">Voted at</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let vote of votes">
-      <td scope="row">{{ vote.id }}</td>
-      <td>{{ vote.answer_id }}</td>
-      <td>{{ vote.ipv4_address }}</td>
-      <td>{{ vote.ipv6_address }}</td>
-      <td>{{ vote.mac_address }}</td>
-      <td>{{ vote.voted_at }}</td>
     </tr>
   </tbody>
 </table>

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using pollor.Server.Models;
 using pollor.Server.Services;
 
@@ -16,38 +18,48 @@ namespace pollor.Server.Controllers
         }
 
         [HttpGet(Name = "GetUsersController")]
-        public List<UserModel> GetAllUsers()
+        public IActionResult GetAllUsers()
         {
-            string query_users = string.Format("SELECT * FROM users");
-            try
-            {
-                return DBConnection.Instance().Query<UserModel>(query_users).ToList();
+            try {
+                using (var context = new PollorDbContext()) {
+                    List<UserModel>? users = context.Users
+                        .Include(u => u.Polls)
+                            .ThenInclude(p => p.Answers)
+                                .ThenInclude(a => a.Votes)
+                        .ToList();
+                    if (users.IsNullOrEmpty()) {
+                        return NotFound();
+                    }
+                    return Ok(users);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-
-            return null;
         }
 
         [HttpGet("{id}")]
-        public UserModel GetUserById(int id)
+        public IActionResult GetUserById(int id)
         {
-            string userByIdQuery = string.Format("SELECT * FROM users WHERE id = @userId");
             try {
-                UserModel user = DBConnection.Instance().QueryById<UserModel>(userByIdQuery, "@userId", id);
-                //if (user == null) {
-                //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Users/{Id}) NOT FOUND", id);
-                //}
-            return user;
+                using (var context = new PollorDbContext()) {
+                    UserModel? user = context.Users
+                        .Where(u => u.Id.Equals(id))
+                        .Include(u => u.Polls)
+                            .ThenInclude(p => p.Answers)
+                                .ThenInclude(a => a.Votes)
+                        .FirstOrDefault();
+                    if (user == null) {
+                        return NotFound();
+                    }
+                    return Ok(user);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-
-            return null;
         }
     }
 }

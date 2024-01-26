@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using pollor.Server.Models;
 using pollor.Server.Services;
 
@@ -16,39 +18,41 @@ namespace pollor.Server.Controllers
         }
 
         [HttpGet(Name = "GetVotesController")]
-        public List<VoteModel> GetAllVotes()
+        public IActionResult GetAllVotes()
         {
-            string query_votes = string.Format("SELECT * FROM votes");
-            try
-            {
-                return DBConnection.Instance().Query<VoteModel>(query_votes).ToList();
+            try {
+                using (var context = new PollorDbContext()) {
+                    List<VoteModel>? votes = context.Votes.ToList();
+                    if (votes.IsNullOrEmpty()) {
+                        return NotFound();
+                    }
+                    return Ok(votes);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-
-            return null;
         }
 
         [HttpGet("{id}")]
-        public VoteModel GetVoteById(int id)
+        public IActionResult GetVoteById(int id)
         {
-            string voteByIdQuery = string.Format("SELECT * FROM votes WHERE id = @voteId");
-            try
-            {
-                VoteModel vote = DBConnection.Instance().QueryById<VoteModel>(voteByIdQuery, "@voteId", id);
-                //if (vote == null) {
-                //    _logger.LogWarning(MyLogEvents.GetItemNotFound, "Get(Votes/{Id}) NOT FOUND", id);
-                //}
-                return vote;
+            try {
+                using (var context = new PollorDbContext()) {
+                    VoteModel? vote = context.Votes
+                        .Where(v => v.Id.Equals(id))
+                        .FirstOrDefault();
+                    if (vote == null) {
+                        return NotFound();
+                    }
+                    return Ok(vote);
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
             }
-
-            return null;
         }
     }
 }
