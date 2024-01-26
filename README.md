@@ -4,7 +4,7 @@ A poll system where users can create polls and vote anonymous on polls. Tech sta
 
 [![license](https://img.shields.io/github/license/devdanielsun/pollor)](https://github.com/devdanielsun/pollor/blob/main/LICENSE.txt)
 [![Frontend - Build and Deploy](https://img.shields.io/github/actions/workflow/status/devdanielsun/pollor/azure-static-web-apps-witty-forest-0d354f403.yml?label=Frontend%20-%20Build%20and%20Deploy)](https://github.com/devdanielsun/pollor/actions/workflows/azure-static-web-apps-witty-forest-0d354f403.yml)
-[![Backend - Build and Deploy](https://img.shields.io/github/actions/workflow/status/devdanielsun/pollor/main_pollor-backend.yml?label=Backend%20-%20Build%20and%20Deploy)](https://github.com/devdanielsun/pollor/actions/workflows/main_pollor-backend.yml)
+[![Backend - Build and Deploy](https://img.shields.io/github/actions/workflow/status/devdanielsun/pollor/main_pollor-backend-windows.yml?label=Backend%20-%20Build%20and%20Deploy)](https://github.com/devdanielsun/pollor/actions/workflows/main_pollor-backend-windows.yml)
 
 ### Requirements
 
