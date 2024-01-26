@@ -1,6 +1,6 @@
 # Pollor - The Anonymous Voting System
 
-A poll system where users can create polls and vote anonymous on polls. Tech stack: Angular, C# .NET Core, MySQL db, Github Actions and Azure as cloud host.
+A poll system where users can create polls and vote anonymous on polls. Tech stack: Angular, C# .NET Core, SQL db, Github Actions and Azure as cloud host.
 
 [![license](https://img.shields.io/github/license/devdanielsun/pollor)](https://github.com/devdanielsun/pollor/blob/main/LICENSE.txt)
 [![Frontend - Build and Deploy](https://img.shields.io/github/actions/workflow/status/devdanielsun/pollor/azure-static-web-apps-witty-forest-0d354f403.yml?label=Frontend%20-%20Build%20and%20Deploy)](https://github.com/devdanielsun/pollor/actions/workflows/azure-static-web-apps-witty-forest-0d354f403.yml)
