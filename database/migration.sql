@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[users](
 	[first_name] [nvarchar](64) NULL,
 	[last_name] [nvarchar](64) NULL,
 	[created_at] [datetime] NOT NULL,
-	CONSTRAINT PK_users PRIMARY KEY NONCLUSTERED (id)
+	CONSTRAINT PK_users PRIMARY KEY NONCLUSTERED (id),
 	CONSTRAINT UC_Users UNIQUE (id,emailaddress,username)
 ) ON [PRIMARY]
 GO

@@ -18,7 +18,7 @@ MS SQL database
     ```
 
     ```
-    docker run -d --name POLLOR_DATABASE -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=myPassw0rd' -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
+    docker run -d --name POLLOR_DATABASE -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=myPassw0rd" -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
     ```
 
     ```
