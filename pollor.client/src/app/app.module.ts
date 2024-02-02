@@ -10,8 +10,10 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PollsComponent } from './polls/polls.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { UserRegisterComponent } from './user-register/user-register.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,10 @@ import { PollsComponent } from './polls/polls.component';
     HeaderComponent,
     HomeComponent,
     PageNotFoundComponent,
-    PollsComponent
+    PollsComponent,
+    UserProfileComponent,
+    UserLoginComponent,
+    UserRegisterComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
@@ -28,7 +33,6 @@ import { PollsComponent } from './polls/polls.component';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    FontAwesomeModule,
     FooterComponent
   ],
   providers: [],
