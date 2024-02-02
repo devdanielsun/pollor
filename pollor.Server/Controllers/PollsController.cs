@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using pollor.Server.Models;
@@ -8,7 +10,7 @@ using pollor.Server.Services;
 namespace pollor.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/")]
     public class PollsController : ControllerBase
     {
         private readonly ILogger<PollsController> _logger;
@@ -18,7 +20,7 @@ namespace pollor.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetPollsController")]
+        [HttpGet("polls")]
         public IActionResult GetAllPolls()
         {
             try {
@@ -39,7 +41,7 @@ namespace pollor.Server.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("poll/{id}")]
         public IActionResult GetPollById(int id)
         {
             try {
@@ -49,6 +51,26 @@ namespace pollor.Server.Controllers
                         .Include(p => p.Answers)
                             .ThenInclude(a => a.Votes)
                         .FirstOrDefault();
+                    if (poll == null) {
+                        return NotFound();
+                    }
+                    return Ok(poll);
+                }
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
+            }
+        }
+
+        [HttpPost("poll")]
+        [Authorize]
+        public IActionResult AddPoll(PollModel newPoll)
+        {
+            try {
+                using (var context = new PollorDbContext()) {
+                    EntityEntry<PollModel>? poll = context.Polls
+                        .Add(newPoll);
                     if (poll == null) {
                         return NotFound();
                     }
