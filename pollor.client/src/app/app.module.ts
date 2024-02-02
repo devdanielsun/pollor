@@ -11,7 +11,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PollsComponent } from './polls/component/polls.component';
+import { PollsComponent } from './polls/polls.component';
 
 @NgModule({
   declarations: [

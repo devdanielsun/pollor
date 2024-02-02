@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { IPolls } from '../polls.interface';
-import { IAnswers } from '../answers.interface';
-import { IVotes } from '../votes.interface';
+import { IPolls } from '../../interfaces/polls.interface';
+import { IAnswers } from '../../interfaces/answers.interface';
+import { IVotes } from '../../interfaces/votes.interface';
 
 
 @Component({
@@ -22,7 +22,7 @@ export class PollsComponent {
   }
 
   getPolls() {
-    this.apiService.get<IPolls[]>('polls')
+    this.apiService.get<IPolls[]>('api/polls')
       .subscribe({
         next: (response) => {
           this.polls = response;
