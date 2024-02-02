@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { IPolls } from '../../interfaces/polls.interface';
-import { IAnswers } from '../../interfaces/answers.interface';
-import { IVotes } from '../../interfaces/votes.interface';
 
+import { AlertMessage } from '../alert-message/alert-message';
 
 @Component({
   selector: 'app-polls',
@@ -14,6 +13,8 @@ export class PollsComponent {
   public polls: IPolls[] = [];
 
   public pollsLoaded: boolean = false;
+  public pollLoadingMsg: string = "Loading polls...";
+  public pollLoadingColor: string = "";
 
   constructor(private apiService: ApiService) { }
 
@@ -28,7 +29,12 @@ export class PollsComponent {
           this.polls = response;
           this.pollsLoaded = true;
         },
-        error: (error) => console.error(error),
+        error: (err) => {
+          this.pollLoadingMsg = err.status + ' - ' + err.message;
+          this.pollLoadingColor = "red";
+          console.error(err);
+          AlertMessage.addErrorAlert(err.error.message);
+        },
         //complete: () => { }
       });
   }

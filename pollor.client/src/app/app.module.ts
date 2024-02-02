@@ -14,6 +14,7 @@ import { PollsComponent } from './polls/polls.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
+import { AlertMessage } from './alert-message/alert-message';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { UserRegisterComponent } from './user-register/user-register.component';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    FooterComponent
+    FooterComponent,
+    AlertMessage
   ],
   providers: [],
   bootstrap: [AppComponent]

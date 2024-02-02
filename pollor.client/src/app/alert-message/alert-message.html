@@ -1,0 +1,5 @@
+<div class="alert-messages">
+    @for (alert of getAlertMessages(); track alert) {
+        <ngb-alert [type]="alert.type" (closed)="close(alert)"><div [innerHTML]="alert.message"></div></ngb-alert>
+    }
+</div>
