@@ -3,12 +3,14 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface Alert {
 	type: string;
+	title: string;
 	message: string;
 }
 
 const ALERTS: Alert[] = [
 	// {
 	// 	type: 'info',
+	//  title: 'Test alert',
 	// 	message: 'This is an test alert',
 	// }
 ];
@@ -36,9 +38,10 @@ export class AlertMessage {
 		AlertMessage.alerts = [];
 	}
 
-    static addAlert(alertType: string, alertMessage: string, timeout: number = 10000) {
+    static addAlert(alertType: string, alertTitle: string, alertMessage: string, timeout: number = 10000) {
         const newAlert : Alert = {
             type: alertType,
+			title: alertTitle,
             message: alertMessage
         };
 
@@ -50,7 +53,7 @@ export class AlertMessage {
 	}
 
     static addErrorAlert(alertMessage: string) {
-        AlertMessage.addAlert("danger", "<b>An error occured:</b><br />" + alertMessage);
+        AlertMessage.addAlert("danger", "An error occured", alertMessage);
 	}
 
     getAlertMessages() {

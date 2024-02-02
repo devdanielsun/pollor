@@ -1,5 +1,9 @@
 <div class="alert-messages">
     @for (alert of getAlertMessages(); track alert) {
-        <ngb-alert [type]="alert.type" (closed)="close(alert)"><div [innerHTML]="alert.message"></div></ngb-alert>
+        <ngb-alert [type]="alert.type" (closed)="close(alert)">
+            <h4 class="alert-heading" [innerHTML]="alert.title"></h4>
+            <hr>
+            <p [innerHTML]="alert.message"></p>
+        </ngb-alert>
     }
 </div>
