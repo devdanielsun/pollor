@@ -12,6 +12,10 @@ a.nav-link:hover {
   color: black !important;
 }
 
+.dropdown-menu {
+  min-width: 200px;
+}
+
 @media screen and (max-width:767px) {
   .nav-pills > li {
     width: 100%;
