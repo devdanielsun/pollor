@@ -9,11 +9,11 @@ namespace pollor.Server.Models
             Answers = new List<AnswerModel>();
         }
 
-        public virtual int User_id { get; set; }
-        public string? Question { get; set; }
-        public DateTime Ending_date { get; set; }
+        public int user_id { get; set; }
+        public string? question { get; set; }
+        public DateTime ending_date { get; set; }
 
-        [ForeignKey("Poll_id")] // ForeignKey attribute in the AnswerModel
+        [ForeignKey("poll_id")] // ForeignKey attribute in the AnswerModel
         public virtual ICollection<AnswerModel> Answers { get; set; }
     }
 }

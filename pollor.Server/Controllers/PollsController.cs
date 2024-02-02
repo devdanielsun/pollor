@@ -47,7 +47,7 @@ namespace pollor.Server.Controllers
             try {
                 using (var context = new PollorDbContext()) {
                     PollModel? poll = context.Polls
-                        .Where(p => p.Id.Equals(id))
+                        .Where(p => p.id.Equals(id))
                         .Include(p => p.Answers)
                             .ThenInclude(a => a.Votes)
                         .FirstOrDefault();
@@ -65,20 +65,23 @@ namespace pollor.Server.Controllers
 
         [HttpPost("poll")]
         [Authorize]
-        public IActionResult AddPoll(PollModel newPoll)
+        public IActionResult AddPoll(PollModel poll)
         {
             try {
                 using (var context = new PollorDbContext()) {
-                    EntityEntry<PollModel>? poll = context.Polls
-                        .Add(newPoll);
-                    if (poll == null) {
-                        return NotFound();
+                    EntityEntry<PollModel> newPoll = context.Polls.Add(poll);
+                    context.SaveChanges();
+
+                    Console.WriteLine("newPoll: " + newPoll.Entity);
+
+                    if (newPoll == null) {
+                        return NotFound(newPoll);
                     }
-                    return Ok(poll);
+                    return Created("poll/" + newPoll.Entity.id.ToString(), newPoll.Entity);
                 }
             }
             catch (Exception ex) {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(500, new { message = ex.Message});
             }
         }

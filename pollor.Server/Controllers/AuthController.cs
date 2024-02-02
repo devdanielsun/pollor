@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
             username = registerUser.username,
             password = hashedPass,
             emailaddress = registerUser.emailaddress,
-            Created_at = DateTime.Now,
+            created_at = DateTime.Now,
         };
 
         EntityEntry<UserAuthModel> createdUser;
@@ -51,8 +51,8 @@ public class AuthController : ControllerBase
         
         var tokeOptions = GetJwtTokenOptions(1, createdUser.Entity);
         var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-        UserModel currentUser = new PollorDbContext().Users.Where(u => u.Id.Equals(createdUser.Entity.Id)).FirstOrDefault()!;
-        return Ok(new AuthenticatedResponse { Token = tokenString, User =  currentUser});
+        UserModel currentUser = new PollorDbContext().Users.Where(u => u.id.Equals(createdUser.Entity.id)).FirstOrDefault()!;
+        return Created("user/" + currentUser.id, new AuthenticatedResponse { token = tokenString, user =  currentUser});
     }
 
 
@@ -90,7 +90,7 @@ public class AuthController : ControllerBase
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
             var currentUser = new PollorDbContext().Users.Where(u => u.username!.ToLower().Equals(authUser.username!.ToLower())).FirstOrDefault();
-            return Ok(new AuthenticatedResponse { Token = tokenString, User = currentUser});
+            return Ok(new AuthenticatedResponse { token = tokenString, user = currentUser});
         }
 
         return Unauthorized();
@@ -100,7 +100,7 @@ public class AuthController : ControllerBase
         var jwtClaims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.username!),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.id.ToString())
         };
 
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!));

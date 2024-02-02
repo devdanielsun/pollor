@@ -41,7 +41,7 @@ namespace pollor.Server.Controllers
             try {
                 using (var context = new PollorDbContext()) {
                     VoteModel? vote = context.Votes
-                        .Where(v => v.Id.Equals(id))
+                        .Where(v => v.id.Equals(id))
                         .FirstOrDefault();
                     if (vote == null) {
                         return NotFound();

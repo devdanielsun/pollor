@@ -45,7 +45,7 @@ namespace pollor.Server.Controllers
             try {
                 using (var context = new PollorDbContext()) {
                     UserModel? user = context.Users
-                        .Where(u => u.Id.Equals(id))
+                        .Where(u => u.id.Equals(id))
                         .Include(u => u.Polls)
                             .ThenInclude(p => p.Answers)
                                 .ThenInclude(a => a.Votes)

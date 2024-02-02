@@ -9,7 +9,7 @@ namespace pollor.Server.Models
             Votes = new List<VoteModel>();
         }
 
-        public virtual int Poll_id { get; set; }
+        public int poll_id { get; set; }
         public string? poll_answer { get; set; }
         
         [ForeignKey("answer_id")] // ForeignKey attribute in the VoteModel

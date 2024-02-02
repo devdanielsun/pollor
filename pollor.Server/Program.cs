@@ -36,9 +36,9 @@ String secretJwtKey = Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!;
 
 /* Add JWT authentication */
 builder.Services.AddAuthentication(opt => {
-    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -83,9 +83,11 @@ builder.Services.AddSwaggerGen(option =>
                 {
                     Type=ReferenceType.SecurityScheme,
                     Id="Bearer"
-                }
+                },
+                Name = "Bearer",
+                In = ParameterLocation.Header,
             },
-            new string[]{}
+            new List<string>()
         }
     });
 });
@@ -102,9 +104,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseStatusCodePages();
 
 app.MapControllers().RequireCors();
 

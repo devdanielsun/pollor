@@ -43,7 +43,7 @@ namespace answeror.Server.Controllers
             try {
                 using (var context = new PollorDbContext()) {
                     AnswerModel? answer = context.Answers
-                        .Where(p => p.Id.Equals(id))
+                        .Where(p => p.id.Equals(id))
                         .Include(a => a.Votes)
                         .FirstOrDefault();
                     if (answer == null) {
