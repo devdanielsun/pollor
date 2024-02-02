@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.IdentityModel.Tokens;
 using pollor.Server.Models;
 using pollor.Server.Services;
@@ -51,6 +53,27 @@ namespace pollor.Server.Controllers
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
+            }
+        }
+
+        [HttpPost("vote")]
+        [Authorize]
+        public IActionResult AddVote(VoteModel vote)
+        {
+            try {
+                using (var context = new PollorDbContext()) {
+                    EntityEntry<VoteModel> newVote = context.Votes.Add(vote);
+                    context.SaveChanges();
+
+                    if (newVote == null) {
+                        return NotFound(newVote);
+                    }
+                    return Created("vote/" + newVote.Entity.id.ToString(), newVote.Entity);
+                }
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(500, new { message = ex.Message});
             }
         }
