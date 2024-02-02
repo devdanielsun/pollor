@@ -30,9 +30,8 @@ export class UserLoginComponent {
     const role = localStorage.getItem('role');
 
     if (token && role) {
-      // todo: check if token if OK
-      // navigate to role profile page
-      this.navigateDashboard(role);
+      console.log("validate token and role");
+      this.validateUser(); // validate and navigate to role profile page
     }
   }
 
@@ -62,6 +61,28 @@ export class UserLoginComponent {
           },
         });
     }
+  }
+
+  validateUser(): any {
+    this.loading = true; // Start the loading spinner
+    this.authService
+      .validateToken()
+      .pipe(
+        finalize(() => {
+          this.loading = false; //Stop the loading spinner
+        })
+      )
+      .subscribe({
+        next: (res: any) => {
+          console.log('Response:', res);
+          this.navigateDashboard(res.user.role);
+        },
+        error: (error: any) => {
+          this.loginError = 'An error occurred during token validation.';
+          console.error('Token validation Error:', error);
+          AlertMessage.addErrorAlert(error.message);
+        },
+      });
   }
 
   navigateDashboard(role: string): void {

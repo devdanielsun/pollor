@@ -30,4 +30,11 @@ namespace pollor.Server.Models
         [Required, StringLength(128)]
         public string? confirmPassword { get; set; }
     }
+
+    public class ValidateTokenModel
+    {
+        public string? token { get; set; }
+        [Required, StringLength(32)]
+        public string? role { get; set; }
+    }
 }
