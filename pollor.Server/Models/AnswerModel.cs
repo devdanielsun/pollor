@@ -9,7 +9,7 @@ namespace pollor.Server.Models
         public AnswerModel() {
             Votes = new List<VoteModel>();
         }
-
+        
         public int poll_id { get; set; }
         [StringLength(256)]
         public string? poll_answer { get; set; }

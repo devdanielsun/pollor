@@ -72,8 +72,6 @@ namespace pollor.Server.Controllers
                     EntityEntry<PollModel> newPoll = context.Polls.Add(poll);
                     context.SaveChanges();
 
-                    Console.WriteLine("newPoll: " + newPoll.Entity);
-
                     if (newPoll == null) {
                         return NotFound(newPoll);
                     }
