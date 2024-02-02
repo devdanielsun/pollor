@@ -9,9 +9,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: UserLoginComponent },
-  { path: 'register', component: UserRegisterComponent },
-  { path: 'profile', component: UserProfileComponent },
+  { path: 'account/login', component: UserLoginComponent },
+  { path: 'account/register', component: UserRegisterComponent },
+  { path: 'account/profile', component: UserProfileComponent },
   { path: 'polls', component: PollsComponent },
   { path: '**', component: PageNotFoundComponent },  // route for 404 page
 ];

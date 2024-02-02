@@ -1,1 +1,33 @@
-<p>user-login works!</p>
+<div class="card">
+    <h5 class="card-header p-3">Login to POLLOR</h5>
+    <div class="card-body p-4">
+        <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && sendLogin()" class="container card-text">
+            <br />
+            <div class="form-group form-floating mb-3">
+                <input formControlName="username" type="username" placeholder="username" class="form-control" id="floatingInput">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-group form-floating mb-3">
+                <input formControlName="password" type="password" placeholder="Password" class="form-control" id="floatingPassword">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class="form-group form-check mb-3">
+                <input formControlName="stayLoggedIn" type="checkbox" class="form-check-input" id="longLoggedin">
+                <label class="form-check-label" for="longLoggedin">
+                    Stay loggedin for 30 days
+                </label>
+            </div>
+            <br />
+            <div *ngIf="!loading">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+            <div *ngIf="loading" >
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+            </div>
+        </form>
+        {{ loginError }}
+    </div>
+</div>
