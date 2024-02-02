@@ -3,6 +3,8 @@ using pollor.Server.Services;
 using pollor.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace answeror.Server.Controllers
 {
@@ -54,6 +56,27 @@ namespace answeror.Server.Controllers
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
+            }
+        }
+
+        [HttpPost("answer")]
+        [Authorize]
+        public IActionResult AddAnswer(AnswerModel answer)
+        {
+            try {
+                using (var context = new PollorDbContext()) {
+                    EntityEntry<AnswerModel> newAnswer = context.Answers.Add(answer);
+                    context.SaveChanges();
+
+                    if (newAnswer == null) {
+                        return NotFound(newAnswer);
+                    }
+                    return Created("answer/" + newAnswer.Entity.id.ToString(), newAnswer.Entity);
+                }
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(500, new { message = ex.Message});
             }
         }
