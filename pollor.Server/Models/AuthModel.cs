@@ -4,19 +4,19 @@ namespace pollor.Server.Models
 {
     public class RegisterModel
     {
-        [Required]
+        [Required, StringLength(256)]
         public string? emailaddress { get; set; }
-        [Required]
+        [Required, StringLength(64)]
         public string? username { get; set; }
-        [Required]
+        [Required, StringLength(128)]
         public string? password { get; set; }
     }
 
     public class LoginModel
     {
-        [Required]
+        [Required, StringLength(64)]
         public string? username { get; set; }
-        [Required]
+        [Required, StringLength(128)]
         public string? password { get; set; }
         public bool tokenLongerValid { get; set; } = false;
     }
@@ -25,9 +25,9 @@ namespace pollor.Server.Models
     {
         [Required]
         public int? id { get; set; }
-        [Required]
+        [Required, StringLength(128)]
         public string? newpassword { get; set; }
-        [Required]
+        [Required, StringLength(128)]
         public string? confirmPassword { get; set; }
     }
 }

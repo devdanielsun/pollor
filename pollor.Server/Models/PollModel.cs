@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pollor.Server.Models
@@ -10,6 +11,7 @@ namespace pollor.Server.Models
         }
 
         public int user_id { get; set; }
+        [StringLength(512)]
         public string? question { get; set; }
         public DateTime ending_date { get; set; }
 

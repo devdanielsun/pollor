@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pollor.Server.Models
@@ -10,6 +11,7 @@ namespace pollor.Server.Models
         }
 
         public int poll_id { get; set; }
+        [StringLength(256)]
         public string? poll_answer { get; set; }
         
         [ForeignKey("answer_id")] // ForeignKey attribute in the VoteModel
