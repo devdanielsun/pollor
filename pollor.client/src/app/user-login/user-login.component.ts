@@ -21,9 +21,9 @@ export class UserLoginComponent {
     private router: Router
   ) {
     this.loginForm = formBuilder.group({
-        username: ["", Validators.required],
-        password: ["", Validators.required],
-        stayLoggedIn: [false, Validators.required]
+      username: ["", Validators.required],
+      password: ["", Validators.required],
+      tokenLongerValid: [false, Validators.required]
     });
   }
 
@@ -44,17 +44,12 @@ export class UserLoginComponent {
         .subscribe({
           next: (res: any) => {
             console.log('Response:', res);
-            if (res.success) {
-              console.log('Show me the success - ', res.role, res)
-              localStorage.setItem('token', res.token);
-              localStorage.setItem('role', res.role);
-              this.loginError = '';
-              this.loginForm.reset();
-              this.navigateDashboard(res.role);
-            } else {
-                this.loginError = 'Invalid email and password combination!';
-              }
-            
+            console.log('Show me the success - ', res.role, res)
+            localStorage.setItem('token', res.token);
+            localStorage.setItem('role', res.role);
+            this.loginError = '';
+            this.loginForm.reset();
+            this.navigateDashboard(res.role);
           },
           error: (error: any) => {
             this.loginError = 'An error occurred during login.';

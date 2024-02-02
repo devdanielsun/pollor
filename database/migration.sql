@@ -18,6 +18,7 @@ CREATE TABLE [dbo].[users](
 	[password] [nvarchar](128) NOT NULL,
 	[first_name] [nvarchar](64) NULL,
 	[last_name] [nvarchar](64) NULL,
+	[role] [nvarchar](32) NULL DEFAULT 'user',
 	[created_at] [datetime] NOT NULL,
 	CONSTRAINT PK_users PRIMARY KEY NONCLUSTERED (id),
 	CONSTRAINT UC_Users UNIQUE (id,emailaddress,username)

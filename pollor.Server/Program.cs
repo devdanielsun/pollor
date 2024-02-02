@@ -27,7 +27,9 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.WithOrigins(corsDomains); // loading array of .env values as allowed CORS domains
+            policy.WithOrigins(corsDomains)             // loading array of .env values as allowed CORS domains
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
         });
 });
 
@@ -39,7 +41,6 @@ if (secretJwtKey == null)
 {
     throw new InvalidOperationException("secretJwtKey contains no value. Make sure SECRET_JWT_KEY is set in .env");
 }
-
 
 /* Add JWT authentication */
 builder.Services.AddAuthentication(opt => {
