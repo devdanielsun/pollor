@@ -7,7 +7,7 @@ using pollor.Server.Services;
 namespace pollor.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/")]
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
@@ -17,7 +17,7 @@ namespace pollor.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetUsersController")]
+        [HttpGet("users")]
         public IActionResult GetAllUsers()
         {
             try {
@@ -39,7 +39,7 @@ namespace pollor.Server.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("user/{id}")]
         public IActionResult GetUserById(int id)
         {
             try {

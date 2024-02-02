@@ -7,7 +7,7 @@ using pollor.Server.Services;
 namespace pollor.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/")]
     public class VotesController : ControllerBase
     {
         private readonly ILogger<VotesController> _logger;
@@ -17,7 +17,7 @@ namespace pollor.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetVotesController")]
+        [HttpGet("votes")]
         public IActionResult GetAllVotes()
         {
             try {
@@ -35,7 +35,7 @@ namespace pollor.Server.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("vote/{id}")]
         public IActionResult GetVoteById(int id)
         {
             try {

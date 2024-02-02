@@ -8,7 +8,7 @@ using pollor.Server.Models;
 using pollor.Server.Services;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-[Route("api/[controller]")]
+[Route("api/auth")]
 [ApiController]
 public class AuthController : ControllerBase
 {

@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace answeror.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/")]
     public class AnswersController : ControllerBase
     {
         private readonly ILogger<AnswersController> _logger;
@@ -17,7 +17,7 @@ namespace answeror.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetAnswersController")]
+        [HttpGet("answers")]
         public IActionResult GetAllAnswers()
         {
             try {
@@ -37,7 +37,7 @@ namespace answeror.Server.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("answer/{id}")]
         public IActionResult GetAnswerById(int id)
         {
             try {
