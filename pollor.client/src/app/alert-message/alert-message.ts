@@ -47,10 +47,15 @@ export class AlertMessage {
 
 		AlertMessage.alerts.unshift(newAlert);
 
-        setTimeout(() => {
-            AlertMessage.alerts.splice(AlertMessage.alerts.indexOf(newAlert), 1);
-         }, timeout); // automatic close the alert after x miliseconds based
-	}
+      setTimeout(() => {
+          AlertMessage.alerts.splice(AlertMessage.alerts.indexOf(newAlert), 1);
+        }, timeout); // automatic close the alert after x miliseconds based
+  }
+
+
+  static addSuccessAlert(alertMessage: string) {
+    AlertMessage.addAlert("success", "Success!", alertMessage);
+  }
 
     static addErrorAlert(alertMessage: string) {
         AlertMessage.addAlert("danger", "An error occured", alertMessage);

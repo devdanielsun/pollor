@@ -30,7 +30,7 @@ export class UserLoginComponent {
     const role = localStorage.getItem('role');
 
     if (token && role) {
-      console.log("validate token and role");
+      console.log("validate user");
       this.validateUser(); // validate and navigate to role profile page
     }
   }
@@ -53,6 +53,7 @@ export class UserLoginComponent {
             this.loginError = '';
             this.loginForm.reset();
             this.navigateDashboard(res.user.role);
+            AlertMessage.addSuccessAlert("Successfull login");
           },
           error: (error: any) => {
             this.loginError = 'An error occurred during login.';

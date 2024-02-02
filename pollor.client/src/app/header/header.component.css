@@ -1,0 +1,23 @@
+nav {
+  background-color: seagreen;
+}
+
+a.nav-link.active {
+  background-color: white;
+  color: black !important;
+}
+
+a.nav-link:hover {
+  background-color: white;
+  color: black !important;
+}
+
+@media screen and (max-width:767px) {
+  .nav-pills > li {
+    width: 100%;
+  }
+
+  .btn-group {
+    margin-left: auto;
+  }
+}

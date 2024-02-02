@@ -1,56 +1,100 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="">
-      <h1>
+      <h1 class="text-white">
         Pollor
         <img src="/assets/img/logo.svg" alt="Logo of Pollor" height="50">
       </h1>
-      <span>The Anonymous Voting System</span>
+      <span class="text-white">The Anonymous Voting System</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="">Home</a>
+      <ul class="nav nav-pills me-auto mb-2 mb-lg-0">
+        <li class="nav-item me-3">
+          <a class="nav-link text-light" aria-current="page" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="polls">All Polls</a>
+        <li class="nav-item me-3">
+          <a class="nav-link text-light" aria-current="page" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="polls">All Polls</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" disabled>
-        <button class="btn btn-outline-success" type="submit" disabled>Search</button>
+      <form class="d-flex p-3" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search in polls" aria-label="Search" disabled readonly>
+        <button class="btn btn-light" type="submit" disabled readonly>Search</button>
       </form>
-      <div class="d-flex" role="search">
-
-        <!-- User Login -->
-        <a data-mdb-ripple-init
-          class="btn btn-link btn-floating btn-lg text-body m-1"
-          routerLink="account/login"
-          role="button"
-          data-mdb-ripple-color="dark">
-          <i class="bi bi-person-lock" style="font-size: 2rem;"></i>
-        </a>
-
-        <!-- User Register -->
-        <a data-mdb-ripple-init
-          class="btn btn-link btn-floating btn-lg text-body m-1"
-          routerLink="account/register"
-          role="button"
-          data-mdb-ripple-color="dark">
-          <i class="bi bi-person-plus" style="font-size: 2rem;"></i>
-        </a>
-
-        <!-- User Profile -->
-        <a data-mdb-ripple-init
-          class="btn btn-link btn-floating btn-lg text-body m-1"
-          routerLink="account/profile"
-          role="button"
-          data-mdb-ripple-color="dark">
-          <i class="bi bi-person-gear" style="font-size: 2rem;"></i>
-        </a>
+      <div class="d-flex p-3" role="search">
+        <!-- User options dropdown -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            User actions
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end w-100 p-2">
+            <!-- User Login -->
+            <li *ngIf="!isLoggedIn()" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" 
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="account/login"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-person-lock" style="font-size: 20px;"></i>
+                  Login
+              </a>
+            </li>
+            <!-- User Register -->
+            <li *ngIf="!isLoggedIn()" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="account/register"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-person-plus" style="font-size: 20px;"></i>
+                Register
+              </a>
+            </li>
+            <!-- User Profile -->
+            <li *ngIf="isLoggedIn()" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="account/profile"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-person-gear" style="font-size: 20px;"></i>
+                User Profile
+              </a>
+            </li>
+            <!-- Admin Profile -->
+            <li *ngIf="isLoggedIn() && isAdmin()" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="account/admin-profile"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-person-gear" style="font-size: 20px;"></i>
+                Admin Profile
+              </a>
+            </li>
+            <li *ngIf="isLoggedIn()">
+              <hr class="dropdown-divider">
+            </li>
+            <!-- Logout -->
+            <li *ngIf="isLoggedIn()" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="account/logout"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-door-closed" style="font-size: 20px;"></i>
+                Logout
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

@@ -1,1 +1,52 @@
-<p>user-profile works!</p>
+<div>
+  <div class="card">
+    <h5 class="card-header p-3">User profile</h5>
+    <div class="card-body p-4">
+      <form [formGroup]="editUserForm" (ngSubmit)="editUserForm.valid && editUser()" class="container card-text">
+        <br />
+        <div class="form-group form-floating mb-3">
+          <input class="form-control" type="text" value="{{ user.role }}" id="floatingRoleInput" disabled readonly>
+          <label for="floatingRoleInput">Role</label>
+        </div>
+        <div class="form-group form-floating mb-3">
+          <input class="form-control" type="text" value="{{ user.created_at }}" id="floatingCreatedatInput" disabled readonly>
+          <label for="floatingCreatedatInput">Joined at</label>
+        </div>
+        <div class="form-group form-floating mb-3">
+          <input class="form-control" type="text" value="{{ user.username }}" id="floatingUsernameInput" disabled readonly>
+          <label for="floatingUsernameInput">Username</label>
+        </div>
+        <div class="form-group form-floating mb-3">
+          <input class="form-control" type="text" value="{{ user.emailaddress }}" id="floatingEmailaddressInput" disabled readonly>
+          <label for="floatingEmailaddressInput">Emailaddress</label>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group form-floating mb-3">
+              <input class="form-control" type="text" value="{{ user.first_name }}" id="floatingFirstnameInput" disabled readonly>
+              <label for="floatingFirstnameInput">First name</label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group form-floating mb-3">
+              <input class="form-control" type="text" value="{{ user.last_name }}" id="floatingLastnameInput" disabled readonly>
+              <label for="floatingLastnameInput">Last name</label>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div *ngIf="userLoaded">
+          <input type="submit" value="Update" class="btn btn-primary" />
+        </div>
+        <div *ngIf="!userLoaded">
+          <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+          </button>
+        </div>
+      </form>
+      {{ profileEditError }}
+    </div>
+  </div>
+
+</div>

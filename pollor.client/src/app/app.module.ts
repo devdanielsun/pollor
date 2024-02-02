@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,6 +35,7 @@ import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profi
   ],
   imports: [
     BrowserModule,
+    RouterModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

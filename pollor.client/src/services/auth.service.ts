@@ -21,7 +21,7 @@ export class AuthService {
   validateToken<T>(): Observable<T> {
     const auth: IAuth = {
       token: AuthService.getToken(),
-      role: localStorage.getItem("role")!
+      role: AuthService.getRole()
     }
     return this.apiService.post<T>('api/auth/validate', auth);
   }
@@ -30,8 +30,18 @@ export class AuthService {
     return this.apiService.post<T>('api/auth/logout', body);
   }
 
-  static getToken() {
+  static getToken() : string {
     return localStorage.getItem("token")!;
   }
 
+  static getRole() : string {
+    return localStorage.getItem("role")!;
+  }
+
+  static isLoggedIn() : boolean {
+    if (this.getRole() && this.getToken()) {
+      return true;
+    }
+    return false;
+  }
 }
