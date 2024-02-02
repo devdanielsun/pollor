@@ -34,6 +34,13 @@ builder.Services.AddCors(options =>
 /* get secret private jwt key value */
 String secretJwtKey = Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!;
 
+/* If values are null or empty, give error message that values are missing in .env */
+if (secretJwtKey == null)
+{
+    throw new InvalidOperationException("secretJwtKey contains no value. Make sure SECRET_JWT_KEY is set in .env");
+}
+
+
 /* Add JWT authentication */
 builder.Services.AddAuthentication(opt => {
         opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
