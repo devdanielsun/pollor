@@ -21,6 +21,7 @@ namespace pollor.Server.Models
         public string? first_name { get; set; }
         [StringLength(64)]
         public string? last_name { get; set; }
+        public string? role { get; set; }
 
         [ForeignKey("user_id")] // ForeignKey attribute in the PollModel
         public virtual ICollection<PollModel> Polls { get; set; }

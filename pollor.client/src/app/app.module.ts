@@ -16,6 +16,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { AlertMessage } from './alert-message/alert-message';
+import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profile.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AlertMessage } from './alert-message/alert-message';
     PollsComponent,
     UserProfileComponent,
     UserLoginComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    UserAdminProfileComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

@@ -25,15 +25,20 @@ export class UserLoginComponent {
       password: ["", Validators.required],
       tokenLongerValid: [false, Validators.required]
     });
+
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    if (token && role) {
+      // todo: check if token if OK
+      // navigate to role profile page
+      this.navigateDashboard(role);
+    }
   }
 
   sendLogin(): void {
     if (this.loginForm.valid) {
-      console.log('this.loginForm.valid', this.loginForm.valid);
       this.loading = true; // Start the loading spinner
-
-      console.log('this.loginForm.value', this.loginForm.value);
-
       this.authService
         .login(this.loginForm.value)
         .pipe(
@@ -44,12 +49,11 @@ export class UserLoginComponent {
         .subscribe({
           next: (res: any) => {
             console.log('Response:', res);
-            console.log('Show me the success - ', res.role, res)
             localStorage.setItem('token', res.token);
-            localStorage.setItem('role', res.role);
+            localStorage.setItem('role', res.user.role);
             this.loginError = '';
             this.loginForm.reset();
-            this.navigateDashboard(res.role);
+            this.navigateDashboard(res.user.role);
           },
           error: (error: any) => {
             this.loginError = 'An error occurred during login.';
@@ -62,7 +66,7 @@ export class UserLoginComponent {
 
   navigateDashboard(role: string): void {
     const dashboardRoute =
-      role === 'admin' ? '/admindashboard' : '/userdashboard';
+      role === 'admin' ? '/account/admin-profile' : '/account/profile';
     this.router.navigate([dashboardRoute]);
     console.log(`${role} dashboard route`);
   }
