@@ -122,7 +122,7 @@ public class AuthController : ControllerBase
         }
 
         SecurityToken validatedToken;
-        IPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(token, GetValidationParameters(), out validatedToken);
+        IPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(token, AuthService.GetValidationParameters(), out validatedToken);
 
         // The user is authenticated, and you can access user information
         var userClaims = HttpContext.User;
@@ -137,13 +137,13 @@ public class AuthController : ControllerBase
             using (var context = new PollorDbContext())
             {
                 UserModel? user = context.Users
-                    .Where(u => u.id.Equals(userId))
-                    .Where(u => u.username.Equals(username))
-                    .Where(u => u.role.Equals(userRole))
+                    .Where(u => u.id.ToString().Equals(userId) &&
+                            u.username.Equals(username) &&
+                            u.role.Equals(userRole))
                     .FirstOrDefault();
                 if (user == null)
                 {
-                    return NotFound("User not found");
+                    return NotFound("User not found...");
                 }
                 return Ok(new AuthenticatedResponse { token = validateTokenModel.token, user = user });
             }
@@ -163,30 +163,17 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.Role, user.role!)
         };
 
+        String jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!.Split(',').FirstOrDefault()!;
+
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!));
         var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
         var tokeOptions = new JwtSecurityToken(
-            issuer: "https://localhost:5001",
-            audience: "https://localhost:5001",
+            issuer: jwtTokenDomain,
+            audience: jwtTokenDomain,
             claims: jwtClaims,
             expires: DateTime.Now.AddDays(tokenValidForXDays),
             signingCredentials: signinCredentials
         );
         return tokeOptions;
-    }
-
-    private static TokenValidationParameters GetValidationParameters()
-    {
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!));
-
-        return new TokenValidationParameters()
-        {
-            ValidateLifetime = true,
-            ValidateAudience = true,
-            ValidateIssuer = true,
-            ValidIssuer = "https://localhost:5001",
-            ValidAudience = "https://localhost:5001",
-            IssuerSigningKey = secretKey // The same key as the one that generate the token
-        };
     }
 }
