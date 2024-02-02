@@ -14,11 +14,13 @@ GO
 CREATE TABLE [dbo].[users](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[emailaddress] [nvarchar](256) NOT NULL,
-	[first_name] [nvarchar](64) NOT NULL,
-	[last_name] [nvarchar](64) NOT NULL,
-	[profile_username] [nvarchar](64) NOT NULL,
+	[username] [nvarchar](64) NOT NULL,
+	[password] [nvarchar](128) NOT NULL,
+	[first_name] [nvarchar](64) NULL,
+	[last_name] [nvarchar](64) NULL,
 	[created_at] [datetime] NOT NULL,
 	CONSTRAINT PK_users PRIMARY KEY NONCLUSTERED (id)
+	CONSTRAINT UC_Users UNIQUE (id,emailaddress,username)
 ) ON [PRIMARY]
 GO
 

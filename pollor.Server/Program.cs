@@ -1,4 +1,7 @@
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using pollor.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +29,28 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(corsDomains); // loading array of .env values as allowed CORS domains
         });
 });
+
+/* get secret private jwt key value */
+String secretJwtKey = Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!;
+
+/* Add JWT authentication */
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "https://localhost:5001",
+            ValidAudience = "https://localhost:5001",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretJwtKey))
+        };
+    });
 
 // Add services to the container.
 
@@ -55,6 +80,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers().RequireCors();
 
