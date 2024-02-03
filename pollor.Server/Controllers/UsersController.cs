@@ -31,7 +31,7 @@ namespace pollor.Server.Controllers
                                 .ThenInclude(a => a.Votes)
                         .ToList();
                     if (users.IsNullOrEmpty()) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(users);
                 }
@@ -76,7 +76,7 @@ namespace pollor.Server.Controllers
                         .FirstOrDefault();
                     if (user == null)
                     {
-                        return NotFound("User not found...");
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(user);
                 }
@@ -100,7 +100,7 @@ namespace pollor.Server.Controllers
                                 .ThenInclude(a => a.Votes)
                         .FirstOrDefault();
                     if (user == null) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(user);
                 }

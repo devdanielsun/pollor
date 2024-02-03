@@ -30,7 +30,7 @@ namespace pollor.Server.Controllers
                             .ThenInclude(a => a.Votes)
                         .ToList();
                     if (polls.IsNullOrEmpty()) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(polls);
                 }
@@ -52,7 +52,7 @@ namespace pollor.Server.Controllers
                             .ThenInclude(a => a.Votes)
                         .FirstOrDefault();
                     if (poll == null) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(poll);
                 }
@@ -73,7 +73,7 @@ namespace pollor.Server.Controllers
                     context.SaveChanges();
 
                     if (newPoll == null) {
-                        return NotFound(newPoll);
+                        return NotFound(new { message = "No records found" });
                     }
                     return Created("poll/" + newPoll.Entity.id.ToString(), newPoll.Entity);
                 }

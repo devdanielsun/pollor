@@ -56,7 +56,7 @@ export class UserProfileComponent {
           this.userLoaded = true;
         },
         error: (err) => {
-          this.userLoadingMsg = err.status + ' - ' + err.message;
+          this.userLoadingMsg = err.status + ' - ' + err.error.message;
           console.error(err);
           AlertMessage.addErrorAlert(err.error.message);
         },

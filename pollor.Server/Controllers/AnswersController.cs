@@ -28,7 +28,7 @@ namespace answeror.Server.Controllers
                         .Include(a => a.Votes)
                         .ToList();
                     if (answers.IsNullOrEmpty()) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(answers);
                 }
@@ -49,7 +49,7 @@ namespace answeror.Server.Controllers
                         .Include(a => a.Votes)
                         .FirstOrDefault();
                     if (answer == null) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(answer);
                 }
@@ -70,7 +70,7 @@ namespace answeror.Server.Controllers
                     context.SaveChanges();
 
                     if (newAnswer == null) {
-                        return NotFound(newAnswer);
+                        return NotFound(new { message = "No records found" });
                     }
                     return Created("answer/" + newAnswer.Entity.id.ToString(), newAnswer.Entity);
                 }

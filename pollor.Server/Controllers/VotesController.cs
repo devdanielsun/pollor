@@ -26,7 +26,7 @@ namespace pollor.Server.Controllers
                 using (var context = new PollorDbContext()) {
                     List<VoteModel>? votes = context.Votes.ToList();
                     if (votes.IsNullOrEmpty()) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(votes);
                 }
@@ -46,7 +46,7 @@ namespace pollor.Server.Controllers
                         .Where(v => v.id.Equals(id))
                         .FirstOrDefault();
                     if (vote == null) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(vote);
                 }
@@ -67,7 +67,7 @@ namespace pollor.Server.Controllers
                     context.SaveChanges();
 
                     if (newVote == null) {
-                        return NotFound(newVote);
+                        return NotFound(new { message = "No records found" });
                     }
                     return Created("vote/" + newVote.Entity.id.ToString(), newVote.Entity);
                 }
