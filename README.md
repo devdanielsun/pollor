@@ -21,9 +21,8 @@ Clone the project and open the folder in the program. And just hit `> Start`
 Make sure the .env files are made and contain the correct values, and the mysql database is running.
 Next to that those two commands should be enough the start both the server and client.
  
-- 1. `cd pollor.Server`
--
-- 2. `dotnet run --launch-profile https`
+1. `cd pollor.Server`
+2. `dotnet run --launch-profile https`
 
 ---
 
