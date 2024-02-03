@@ -56,7 +56,7 @@ export class UserLoginComponent {
             AlertMessage.addSuccessAlert("Login is successfull !");
           },
           error: (err: any) => {
-            const msg = (err.error.message ? err.error.message : err.message);
+            const msg = ((err.error && err.error.message) ? err.error.message : err.message);
             this.loginError = err.status + ' - ' + msg;
             console.error('Login Error:', err);
             AlertMessage.addErrorAlert(msg);
@@ -80,7 +80,7 @@ export class UserLoginComponent {
           this.navigateDashboard(res.user.role);
         },
         error: (err: any) => {
-          const msg = (err.error.message ? err.error.message : err.message);
+          const msg = ((err.error && err.error.message) ? err.error.message : err.message);
           this.loginError = err.status + ' - ' + msg;
           console.error('Token validation Error:', err);
           AlertMessage.addErrorAlert(msg);
