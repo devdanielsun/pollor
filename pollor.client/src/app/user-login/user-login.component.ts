@@ -53,12 +53,12 @@ export class UserLoginComponent {
             this.loginError = '';
             this.loginForm.reset();
             this.navigateDashboard(res.user.role);
-            AlertMessage.addSuccessAlert("Successfull login");
+            AlertMessage.addSuccessAlert("Login is successfull !");
           },
-          error: (error: any) => {
-            this.loginError = 'An error occurred during login.';
-            console.error('Login Error:', error);
-            AlertMessage.addErrorAlert(error.message);
+          error: (err: any) => {
+            this.loginError = err.error.message;
+            console.error('Login Error:', err);
+            AlertMessage.addErrorAlert(err.error.message);
           },
         });
     }
@@ -78,10 +78,10 @@ export class UserLoginComponent {
           console.log('Response:', res);
           this.navigateDashboard(res.user.role);
         },
-        error: (error: any) => {
-          this.loginError = 'An error occurred during token validation.';
-          console.error('Token validation Error:', error);
-          AlertMessage.addErrorAlert(error.message);
+        error: (err: any) => {
+          this.loginError = err.error.message;
+          console.error('Token validation Error:', err);
+          AlertMessage.addErrorAlert(err.error.message);
         },
       });
   }

@@ -30,42 +30,61 @@ public class AuthController : ControllerBase
     {
         if (registerUser is null)
         {
-            return BadRequest("Invalid client request");
+            return BadRequest(new { message = "Invalid client request" });
         }
 
         if (registerUser.password!.Length < 8) {
-            return BadRequest("Password must be longer than 8 characters.");
+            return BadRequest(new { message = "Password must be longer than 8 characters." });
         }
 
         bool isUsernameAvailable = new PollorDbContext().UserAuthModel.Where(u => u.username!.ToLower().Equals(registerUser.username!.ToLower())).IsNullOrEmpty();
         if (isUsernameAvailable == false) {
-            return BadRequest("Username is already taken, please login or use another username.");
+            return BadRequest(new { message = "Username is already taken, please login or use another username." });
         }
 
         bool isEmailAvailable = new PollorDbContext().UserAuthModel.Where(u => u.emailaddress!.ToLower().Equals(registerUser.emailaddress!.ToLower())).IsNullOrEmpty();
         if (isEmailAvailable == false) {
-            return BadRequest("Emailaddress is already taken, please login or use another emailaddress.");
+            return BadRequest(new { message = "Emailaddress is already taken, please login or use another emailaddress." });
         }
 
         var hasher = new PasswordHasher<RegisterModel>();
         var hashedPass = hasher.HashPassword(registerUser, registerUser.password!);
-        UserAuthModel newUser = new UserAuthModel() {
+        UserAuthModel tempUser = new UserAuthModel() {
             username = registerUser.username,
             password = hashedPass,
             emailaddress = registerUser.emailaddress,
             created_at = DateTime.Now,
         };
 
-        EntityEntry<UserAuthModel> createdUser;
-        using (var pollorContext = new PollorDbContext()) {
-            createdUser = pollorContext.UserAuthModel.Add(newUser);
-            pollorContext.SaveChanges();
+        try
+        {
+            using (var context = new PollorDbContext())
+            {
+                // Create new user
+                EntityEntry<UserAuthModel> createdUser = context.UserAuthModel.Add(tempUser);
+                context.SaveChanges();
+
+                // Get full user data
+                UserModel? newUser = context.Users
+                    .Where(u => u.id.Equals(createdUser.Entity.id) &&
+                            u.username!.Equals(createdUser.Entity.username) &&
+                            u.emailaddress!.Equals(createdUser.Entity.emailaddress))
+                    .FirstOrDefault();
+                if (newUser == null)
+                {
+                    return NotFound(new { message = "User not found..." });
+                }
+                var tokeOptions = GetJwtTokenOptions(1, newUser);
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+                return Created("user/" + newUser.id, new AuthenticatedResponse { token = tokenString, user = newUser });
+
+            }
         }
-        
-        var tokeOptions = GetJwtTokenOptions(1, createdUser.Entity);
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-        UserModel currentUser = new PollorDbContext().Users.Where(u => u.id.Equals(createdUser.Entity.id)).FirstOrDefault()!;
-        return Created("user/" + currentUser.id, new AuthenticatedResponse { token = tokenString, user =  currentUser});
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(500, new { message = ex.Message });
+        }
     }
 
 
@@ -74,39 +93,37 @@ public class AuthController : ControllerBase
     {
         if (loginUser is null)
         {
-            return BadRequest("Invalid client request");
+            return BadRequest(new { message = "Invalid client request" });
         }
 
         var authUser = new PollorDbContext().UserAuthModel.Where(u => u.username!.ToLower().Equals(loginUser.username!.ToLower())).FirstOrDefault();
         if (authUser == null) {
-            return Unauthorized("Username or password is wrong!");
+            return Unauthorized(new { message = "Username or password is wrong!" });
         }
 
         var hasher = new PasswordHasher<LoginModel>();
         PasswordVerificationResult passwordIsOk = hasher.VerifyHashedPassword(loginUser, authUser.password!, loginUser.password!);
 
         if (passwordIsOk == PasswordVerificationResult.Failed) {
-            return Unauthorized("Username or password is wrong!");
+            return Unauthorized(new { message = "Username or password is wrong!" });
         }
 
         if (authUser.username == loginUser.username && (passwordIsOk == PasswordVerificationResult.Success || passwordIsOk == PasswordVerificationResult.SuccessRehashNeeded))
         {
             if (passwordIsOk == PasswordVerificationResult.SuccessRehashNeeded) {
                 // rehash password and save to DB
+                _logger.LogError("Rehash password and save to DB");
             }
 
             int tokenLongerValid = (bool)loginUser.tokenLongerValid ? 31 : 1;// true = 31, false = 1
-        
-            var currentUserWithPass = new PollorDbContext().UserAuthModel.Where(u => u.username!.ToLower().Equals(authUser.username!.ToLower())).FirstOrDefault();
-            int daysTokenIsValid = tokenLongerValid;
-            var tokenOptions = GetJwtTokenOptions(daysTokenIsValid, currentUserWithPass!);
+            var currentUser = new PollorDbContext().Users.Where(u => u.username!.ToLower().Equals(authUser.username!.ToLower())).FirstOrDefault();
+            var tokenOptions = GetJwtTokenOptions(tokenLongerValid, currentUser!);
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            var currentUser = new PollorDbContext().Users.Where(u => u.username!.ToLower().Equals(authUser.username!.ToLower())).FirstOrDefault();
             return Ok(new AuthenticatedResponse { token = tokenString, user = currentUser});
         }
 
-        return Unauthorized();
+        return Unauthorized(new { message = "something went wrong" } );
     }
 
     [HttpPost("validate")]
@@ -138,12 +155,12 @@ public class AuthController : ControllerBase
             {
                 UserModel? user = context.Users
                     .Where(u => u.id.ToString().Equals(userId) &&
-                            u.username.Equals(username) &&
-                            u.role.Equals(userRole))
+                            u.username!.Equals(username) &&
+                            u.role!.Equals(userRole))
                     .FirstOrDefault();
                 if (user == null)
                 {
-                    return NotFound("User not found...");
+                    return NotFound(new { message = "User not found..." });
                 }
                 return Ok(new AuthenticatedResponse { token = validateTokenModel.token, user = user });
             }
@@ -155,7 +172,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    private JwtSecurityToken GetJwtTokenOptions (int tokenValidForXDays, UserAuthModel user) {
+    private JwtSecurityToken GetJwtTokenOptions (int tokenValidForXDays, UserModel user) {
         var jwtClaims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.username!),

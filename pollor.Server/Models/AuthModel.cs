@@ -10,6 +10,8 @@ namespace pollor.Server.Models
         public string? username { get; set; }
         [Required, StringLength(128)]
         public string? password { get; set; }
+        [Required, StringLength(128)]
+        public string? confirmPassword { get; set; }
     }
 
     public class LoginModel

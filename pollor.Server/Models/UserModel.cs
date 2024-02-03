@@ -9,9 +9,6 @@ namespace pollor.Server.Models
         public string? username { get; set; }
         [StringLength(256)]
         public string? emailaddress { get; set; }
-        [StringLength(32)]
-        public string? role { get; set; }
-
     }
 
     [Table("users")]
@@ -24,6 +21,8 @@ namespace pollor.Server.Models
         public string? first_name { get; set; }
         [StringLength(64)]
         public string? last_name { get; set; }
+        [StringLength(32)]
+        public string? role { get; set; }
 
         [ForeignKey("user_id")] // ForeignKey attribute in the PollModel
         public virtual ICollection<PollModel> Polls { get; set; }

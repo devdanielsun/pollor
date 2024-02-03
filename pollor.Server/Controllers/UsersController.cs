@@ -71,8 +71,8 @@ namespace pollor.Server.Controllers
                 {
                     UserModel? user = context.Users
                         .Where(u => u.id.ToString().Equals(userId) &&
-                            u.username.Equals(username) &&
-                            u.role.Equals(userRole))
+                            u.username!.Equals(username) &&
+                            u.role!.Equals(userRole))
                         .FirstOrDefault();
                     if (user == null)
                     {

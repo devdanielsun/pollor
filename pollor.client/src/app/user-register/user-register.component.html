@@ -1,1 +1,35 @@
-<p>user-register works!</p>
+<div class="card">
+  <h5 class="card-header p-3">Register Account for POLLOR</h5>
+  <div class="card-body p-4">
+    <form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && sendRegister()" class="container card-text">
+      <br />
+      <div class="form-group form-floating mb-3">
+        <input formControlName="emailaddress" type="email" placeholder="Emailaddress" class="form-control" id="floatingEmailInput">
+        <label for="floatingEmailInput">Emailaddress</label>
+      </div>
+      <div class="form-group form-floating mb-3">
+        <input formControlName="username" type="text" placeholder="Username" class="form-control" id="floatingInput">
+        <label for="floatingInput">Username</label>
+      </div>
+      <div class="form-group form-floating mb-3">
+        <input formControlName="password" type="password" placeholder="Password" class="form-control" id="floatingPassword">
+        <label for="floatingPassword">Password</label>
+      </div>
+      <div class="form-group form-floating mb-3">
+        <input formControlName="confirmPassword" type="password" placeholder="Confirm Password" class="form-control" id="floatingConfirmPassword">
+        <label for="floatingConfirmPassword">Confirm Password</label>
+      </div>
+      <br />
+      <div *ngIf="!loading">
+        <input type="submit" value="Register Account" class="btn btn-primary" />
+      </div>
+      <div *ngIf="loading">
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
+      </div>
+    </form>
+    {{ registerError }}
+  </div>
+</div>
