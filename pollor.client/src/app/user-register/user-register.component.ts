@@ -18,8 +18,8 @@ export class UserRegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router) {
+    private authService: AuthService
+  ) {
     this.registerForm = this.fb.group({
       emailaddress: new FormControl(null, [Validators.required, Validators.pattern(this.regexEmail)]),
       username: new FormControl(null, [Validators.required, Validators.minLength(4)]),
@@ -30,12 +30,8 @@ export class UserRegisterComponent {
       validator: this.ConfirmedValidator('password', 'confirmPassword'),
     });
 
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-
-    if (token && role) {
-      console.log("validate user");
-      this.validateUser(); // validate and navigate to role profile page
+    if (this.authService.isLoggedIn()) {
+      this.validateUserAndRedirectToProfile(); // validate and navigate to role profile page
     }
   }
 
@@ -61,7 +57,7 @@ export class UserRegisterComponent {
             localStorage.setItem('role', res.user.role);
             this.registerError = '';
             this.registerForm.reset();
-            this.navigateDashboard(res.user.role);
+            this.authService.navigateDashboard(res.user.role);
             AlertMessage.addSuccessAlert("Account registration is successfull !");
           },
           error: (err: any) => {
@@ -74,7 +70,7 @@ export class UserRegisterComponent {
     }
   }
 
-  validateUser(): any {
+  validateUserAndRedirectToProfile(): any {
     this.loading = true; // Start the loading spinner
     this.authService
       .validateToken()
@@ -86,7 +82,7 @@ export class UserRegisterComponent {
       .subscribe({
         next: (res: any) => {
           console.log('Response:', res);
-          this.navigateDashboard(res.user.role);
+          this.authService.navigateDashboard(res.user.role);
         },
         error: (err: any) => {
           const msg = ((err.error && err.error.message) ? err.error.message : err.message);
@@ -95,13 +91,6 @@ export class UserRegisterComponent {
           AlertMessage.addErrorAlert(msg);
         },
       });
-  }
-
-  navigateDashboard(role: string): void {
-    const dashboardRoute =
-      role === 'admin' ? '/account/admin-profile' : '/account/profile';
-    this.router.navigate([dashboardRoute]);
-    console.log(`${role} dashboard route`);
   }
 
   ConfirmedValidator(controlName: string, matchingControlName: string) {

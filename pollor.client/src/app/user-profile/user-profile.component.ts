@@ -40,6 +40,8 @@ export class UserProfileComponent {
       first_name: ["", Validators.required],
       last_name: ["", Validators.required]
     });
+
+    this.authService.logoutIfUserDoesNotValidate(); // redirect if not loggedin or token is not ok
   }
 
   ngOnInit() {
