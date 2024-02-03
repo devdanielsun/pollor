@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AlertMessage } from '../alert-message/alert-message';
@@ -14,17 +14,20 @@ export class UserRegisterComponent {
   registerError: string = '';
   loading: boolean = false;
   registerForm: FormGroup;
+  regexEmail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
-  ) {
-    this.registerForm = formBuilder.group({
-      emailaddress: ["", Validators.required],
-      username: ["", Validators.required],
-      password: ["", Validators.required],
-      confirmPassword: ["", Validators.required]
+    private router: Router) {
+    this.registerForm = this.fb.group({
+      emailaddress: new FormControl(null, [Validators.required, Validators.pattern(this.regexEmail)]),
+      username: new FormControl(null, [Validators.required, Validators.minLength(4)]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+      confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(8)])
+    },
+    {
+      validator: this.ConfirmedValidator('password', 'confirmPassword'),
     });
 
     const token = localStorage.getItem('token');
@@ -35,6 +38,11 @@ export class UserRegisterComponent {
       this.validateUser(); // validate and navigate to role profile page
     }
   }
+
+  get getEmailaddress(): AbstractControl  { return this.registerForm.get('emailaddress')!; }
+  get getUsername(): AbstractControl { return this.registerForm.get('username')!; }
+  get getPassword(): AbstractControl  { return this.registerForm.get('password')!; }
+  get getConfirmPassword(): AbstractControl  { return this.registerForm.get('confirmPassword')!; }
 
   sendRegister(): void {
     if (this.registerForm.valid) {
@@ -92,5 +100,23 @@ export class UserRegisterComponent {
       role === 'admin' ? '/account/admin-profile' : '/account/profile';
     this.router.navigate([dashboardRoute]);
     console.log(`${role} dashboard route`);
+  }
+
+  ConfirmedValidator(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+      if (
+        matchingControl.errors &&
+        !matchingControl.errors.confirmedValidator
+      ) {
+        return;
+      }
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ confirmedValidator: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+    };
   }
 }
