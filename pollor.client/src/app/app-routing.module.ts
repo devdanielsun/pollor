@@ -7,11 +7,13 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profile.component';
+import { UserLogoutComponent } from './user-logout/user-logout.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'account/login', component: UserLoginComponent },
   { path: 'account/register', component: UserRegisterComponent },
+  { path: 'account/logout', component: UserLogoutComponent },
   { path: 'account/profile', component: UserProfileComponent },
   { path: 'account/admin-profile', component: UserAdminProfileComponent },
   { path: 'polls', component: PollsComponent },

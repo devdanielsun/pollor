@@ -115,7 +115,7 @@ public class AuthController : ControllerBase
                 _logger.LogError("Rehash password and save to DB");
             }
 
-            int tokenLongerValid = (bool)loginUser.tokenLongerValid ? 31 : 1;// true = 31, false = 1
+            int tokenLongerValid = (bool)loginUser.tokenLongerValid ? 14 : 1;// true = 14, false = 1
             var currentUser = new PollorDbContext().Users.Where(u => u.username!.ToLower().Equals(authUser.username!.ToLower())).FirstOrDefault();
             var tokenOptions = GetJwtTokenOptions(tokenLongerValid, currentUser!);
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);

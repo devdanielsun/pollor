@@ -20,6 +20,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { AlertMessage } from './alert-message/alert-message';
 import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profile.component';
+import { UserLogoutComponent } from './user-logout/user-logout.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profi
     UserProfileComponent,
     UserLoginComponent,
     UserRegisterComponent,
-    UserAdminProfileComponent
+    UserAdminProfileComponent,
+    UserLogoutComponent
   ],
   imports: [
     BrowserModule,

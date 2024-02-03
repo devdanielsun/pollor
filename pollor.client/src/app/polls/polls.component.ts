@@ -16,7 +16,10 @@ export class PollsComponent {
   public pollLoadingMsg: string = "Loading polls...";
   public pollLoadingColor: string = "";
 
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService,
+    private alertMessage: AlertMessage
+  ) { }
 
   ngOnInit() {
     this.getPolls();
@@ -34,7 +37,7 @@ export class PollsComponent {
           this.pollLoadingMsg = err.status + ' - ' + msg;
           this.pollLoadingColor = "red";
           console.error(err);
-          AlertMessage.addErrorAlert(msg);
+          this.alertMessage.addErrorAlert(msg);
         },
         //complete: () => { }
       });

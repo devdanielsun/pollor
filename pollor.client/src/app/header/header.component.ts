@@ -8,11 +8,13 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent {
 
+  constructor(private authService: AuthService) { }
+
   isAdmin(): boolean {
-    return AuthService.getRole().toLowerCase() == "admin";
+    return this.authService.getRole().toLowerCase() == "admin";
   }
 
   isLoggedIn(): boolean {
-    return AuthService.isLoggedIn();
+    return this.authService.isLoggedIn();
   }
 }
