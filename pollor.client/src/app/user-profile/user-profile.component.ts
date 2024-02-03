@@ -56,9 +56,10 @@ export class UserProfileComponent {
           this.userLoaded = true;
         },
         error: (err) => {
-          this.userLoadingMsg = err.status + ' - ' + err.error.message;
+          const msg = (err.error.message ? err.error.message : err.message);
+          this.userLoadingMsg = err.status + ' - ' + msg;
           console.error(err);
-          AlertMessage.addErrorAlert(err.error.message);
+          AlertMessage.addErrorAlert(msg);
         },
         //complete: () => { }
       });

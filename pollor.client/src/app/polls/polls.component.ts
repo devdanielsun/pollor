@@ -30,10 +30,11 @@ export class PollsComponent {
           this.pollsLoaded = true;
         },
         error: (err) => {
-          this.pollLoadingMsg = err.status + ' - ' + err.error.message;
+          const msg = (err.error.message ? err.error.message : err.message);
+          this.pollLoadingMsg = err.status + ' - ' + msg;
           this.pollLoadingColor = "red";
           console.error(err);
-          AlertMessage.addErrorAlert(err.error.message);
+          AlertMessage.addErrorAlert(msg);
         },
         //complete: () => { }
       });
