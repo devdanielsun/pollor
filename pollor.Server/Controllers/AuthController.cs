@@ -180,7 +180,7 @@ public class AuthController : ControllerBase
             new Claim(ClaimTypes.Role, user.role!)
         };
 
-        String jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!.Split(',').FirstOrDefault()!;
+        string jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!;
 
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!));
         var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);

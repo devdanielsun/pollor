@@ -42,6 +42,13 @@ if (secretJwtKey == null)
     throw new InvalidOperationException("secretJwtKey contains no value. Make sure SECRET_JWT_KEY is set in .env");
 }
 
+String jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!;
+/* If values are null or empty, give error message that values are missing in .env */
+if (jwtTokenDomain == null)
+{
+    throw new InvalidOperationException("jwtTokenDomain contains no value. Make sure JWT_TOKEN_DOMAIN is set in .env");
+}
+
 /* Add JWT authentication */
 builder.Services.AddAuthentication(opt => {
         opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -55,8 +62,8 @@ builder.Services.AddAuthentication(opt => {
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:5001",
-            ValidAudience = "https://localhost:5001",
+            ValidIssuer = jwtTokenDomain,
+            ValidAudience = jwtTokenDomain,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretJwtKey))
         };
     });

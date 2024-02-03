@@ -8,7 +8,7 @@ namespace pollor.Server.Services
         public static TokenValidationParameters GetValidationParameters()
         {
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!));
-            String jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!.Split(',').FirstOrDefault()!;
+            string jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!;
 
             return new TokenValidationParameters()
             {
