@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using pollor.Server.Models;
@@ -8,7 +10,7 @@ using pollor.Server.Services;
 namespace pollor.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/")]
     public class PollsController : ControllerBase
     {
         private readonly ILogger<PollsController> _logger;
@@ -18,7 +20,7 @@ namespace pollor.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetPollsController")]
+        [HttpGet("polls")]
         public IActionResult GetAllPolls()
         {
             try {
@@ -28,7 +30,7 @@ namespace pollor.Server.Controllers
                             .ThenInclude(a => a.Votes)
                         .ToList();
                     if (polls.IsNullOrEmpty()) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(polls);
                 }
@@ -39,24 +41,45 @@ namespace pollor.Server.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("poll/{id}")]
         public IActionResult GetPollById(int id)
         {
             try {
                 using (var context = new PollorDbContext()) {
                     PollModel? poll = context.Polls
-                        .Where(p => p.Id.Equals(id))
+                        .Where(p => p.id.Equals(id))
                         .Include(p => p.Answers)
                             .ThenInclude(a => a.Votes)
                         .FirstOrDefault();
                     if (poll == null) {
-                        return NotFound();
+                        return NotFound(new { message = "No records found" });
                     }
                     return Ok(poll);
                 }
             }
             catch (Exception ex) {
                 _logger.LogError(ex.Message);
+                return StatusCode(500, new { message = ex.Message});
+            }
+        }
+
+        [HttpPost("poll")]
+        [Authorize]
+        public IActionResult AddPoll(PollModel poll)
+        {
+            try {
+                using (var context = new PollorDbContext()) {
+                    EntityEntry<PollModel> newPoll = context.Polls.Add(poll);
+                    context.SaveChanges();
+
+                    if (newPoll == null) {
+                        return NotFound(new { message = "No records found" });
+                    }
+                    return Created("poll/" + newPoll.Entity.id.ToString(), newPoll.Entity);
+                }
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(500, new { message = ex.Message});
             }
         }

@@ -1,5 +1,8 @@
-<app-header></app-header>
-
-<router-outlet></router-outlet>
-
-<app-footer></app-footer>
+<div id="page-container">
+    <app-header></app-header>
+    <div id="content-wrap">
+        <router-outlet></router-outlet>
+    </div>
+    <ngbd-alert-message></ngbd-alert-message>
+    <app-footer></app-footer>
+</div>

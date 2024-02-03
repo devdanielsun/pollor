@@ -11,7 +11,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{98
 	ProjectSection(SolutionItems) = preProject
 		database\drop-tables.sql = database\drop-tables.sql
 		database\migration.sql = database\migration.sql
+		database\README.md = database\README.md
 		database\seed.sql = database\seed.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9096682-FD32-481C-ACA9-8F8AE88BD0D6}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

@@ -9,6 +9,7 @@ namespace pollor.Server.Services {
 
         //entities
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<UserAuthModel> UserAuthModel { get; set; }
         public DbSet<PollModel> Polls { get; set; }
         public DbSet<VoteModel> Votes { get; set; }
         public DbSet<AnswerModel> Answers { get; set; }

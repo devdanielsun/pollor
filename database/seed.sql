@@ -1,8 +1,8 @@
 USE [pollor_db]
 GO
 
-INSERT INTO users (emailaddress, first_name, last_name, profile_username, created_at)
-VALUES ('test@test.nl', 'Tester', 'Test', 'Testing', '1970-01-01T00:00:01');
+INSERT INTO users (emailaddress, first_name, last_name, username, password, created_at)
+VALUES ('test@test.nl', 'Tester', 'Test', 'Testing', '', '1970-01-01T00:00:01');
 GO
 
 INSERT INTO polls (user_id, question, ending_date, created_at)

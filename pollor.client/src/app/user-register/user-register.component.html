@@ -1,0 +1,94 @@
+<div class="card">
+  <h5 class="card-header p-3">Register your account for POLLOR</h5>
+  <div class="card-body p-4">
+    <form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && sendRegister()" class="container card-text" novalidate>
+      <br />
+
+      <!-- Emailaddress -->
+      <div class="form-group form-floating mb-3">
+        <input formControlName="emailaddress" type="email" placeholder="Emailaddress" class="form-control" id="floatingEmailInput">
+        <label for="floatingEmailInput">Emailaddress</label>
+        <!-- Emailaddress validation -->
+        <div *ngIf="getEmailaddress.invalid && (getEmailaddress.dirty || getEmailaddress.touched)" class="alert alert-danger">
+          <div *ngIf="getEmailaddress.errors?.required">
+            Emailaddress is required.
+          </div>
+          <div *ngIf="getEmailaddress.errors?.pattern">
+            Should be an emailaddress
+          </div>
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div class="form-group form-floating mb-3">
+        <input formControlName="username" type="text" placeholder="Username" class="form-control" id="floatingUsernameInput">
+        <label for="floatingUsernameInput">Username</label>
+        <!-- Username validation -->
+        <div *ngIf="getUsername.invalid && (getUsername.dirty || getUsername.touched)" class="alert alert-danger">
+          <div *ngIf="getUsername.errors?.required">
+            Username is required.
+          </div>
+          <div *ngIf="getUsername.errors?.minlength">
+            Minimal length should be 4.
+          </div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group has-validation mb-3">
+        <div class="form-group form-floating">
+          <input formControlName="password" type="password" placeholder="Password" class="form-control" id="floatingPassword">
+          <label for="floatingPassword">Password</label>
+          <!-- Password validation -->
+          <div *ngIf="getPassword.invalid && (getPassword.dirty || getPassword.touched)" class="alert alert-danger">
+            <div *ngIf="getPassword.errors?.required">
+              Password is required.
+            </div>
+            <div *ngIf="getPassword.errors?.minlength">
+              Minimal length should be 8.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-group has-validation mb-3">
+        <div class="form-group form-floating">
+          <input formControlName="confirmPassword" type="password" placeholder="Password" class="form-control" id="floatingConfirmPassword">
+          <label for="floatingConfirmPassword">Password</label>
+          <!-- Confirm Password validation -->
+          <div *ngIf="getConfirmPassword.invalid && (getConfirmPassword.dirty || getConfirmPassword.touched)" class="alert alert-danger">
+            <div *ngIf="getConfirmPassword.errors?.required">
+              Password is required.
+            </div>
+            <div *ngIf="getConfirmPassword.errors?.minlength">
+              Minimal length should be 8.
+            </div>
+            <div *ngIf="getConfirmPassword.errors?.confirmedValidator">
+              Passwords don't match.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <div *ngIf="!loading && registerForm.status == 'VALID'">
+        <input type="submit" value="Register Account" class="btn btn-primary" />
+      </div>
+      <div *ngIf="loading">
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
+      </div>
+      <div *ngIf="registerForm.status != 'VALID'">
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="" role="status" aria-hidden="true"></span>
+          Register Account
+        </button>
+      </div>
+
+    </form>
+    {{ registerError }}
+  </div>
+</div>

@@ -2,7 +2,7 @@
 
 <h3 id="tableLabel" text-right>Polls</h3>
 
-<p *ngIf="!pollsLoaded"><em>Loading POLLS...</em></p>
+<p *ngIf="!pollsLoaded"><em [style.color]="pollLoadingColor">{{ pollLoadingMsg }}</em></p>
 
 <p *ngIf="pollsLoaded && polls.length == 0"><em>no poll data found</em></p>
 
