@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface Alert {
@@ -16,52 +16,55 @@ const ALERTS: Alert[] = [
 ];
 
 @Component({
-	selector: 'ngbd-alert-message',
-	standalone: true,
-	imports: [NgbAlertModule],
-	templateUrl: './alert-message.html',
-    styleUrl: './alert-message.css'
+  selector: 'ngbd-alert-message',
+  standalone: true,
+  imports: [NgbAlertModule],
+  templateUrl: './alert-message.html',
+  styleUrl: './alert-message.css'
 
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class AlertMessage {
-	static alerts: Alert[] = ALERTS;
+  alerts: Alert[] = ALERTS;
 
-    constructor() {
-        this.reset();
-    }
+  constructor() {
+    //this.reset();
+  }
 
-	close(alert: Alert) {
-		AlertMessage.alerts.splice(AlertMessage.alerts.indexOf(alert), 1);
-	}
+  close(alert: Alert) {
+    this.alerts.splice(this.alerts.indexOf(alert), 1);
+  }
 
-    reset() {
-		AlertMessage.alerts = [];
-	}
+  reset() {
+    this.alerts = [];
+  }
 
-    static addAlert(alertType: string, alertTitle: string, alertMessage: string, timeout: number = 10000) {
-        const newAlert : Alert = {
-            type: alertType,
-			title: alertTitle,
-            message: alertMessage
-        };
+  addAlert(alertType: string, alertTitle: string, alertMessage: string, timeout: number = 10000) {
+    const newAlert: Alert = {
+      type: alertType,
+      title: alertTitle,
+      message: alertMessage
+    };
 
-		AlertMessage.alerts.unshift(newAlert);
+    this.alerts.unshift(newAlert);
 
-      setTimeout(() => {
-          AlertMessage.alerts.splice(AlertMessage.alerts.indexOf(newAlert), 1);
-        }, timeout); // automatic close the alert after x miliseconds based
+    setTimeout(() => {
+      this.alerts.splice(this.alerts.indexOf(newAlert), 1);
+    }, timeout); // automatic close the alert after x miliseconds based
   }
 
 
-  static addSuccessAlert(alertMessage: string) {
-    AlertMessage.addAlert("success", "Success!", alertMessage);
+  addSuccessAlert(alertMessage: string) {
+    this.addAlert("success", "Success!", alertMessage);
   }
 
-    static addErrorAlert(alertMessage: string) {
-        AlertMessage.addAlert("danger", "An error occured", alertMessage);
-	}
+  addErrorAlert(alertMessage: string) {
+    this.addAlert("danger", "An error occured", alertMessage);
+  }
 
-    getAlertMessages() {
-        return AlertMessage.alerts;
-    }
+  getAlertMessages() {
+    return this.alerts;
+  }
 }

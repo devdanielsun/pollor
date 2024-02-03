@@ -17,6 +17,7 @@ export class UserLoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private alertMessage: AlertMessage
   ) {
     this.loginForm = formBuilder.group({
       username: ["", Validators.required],
@@ -48,13 +49,13 @@ export class UserLoginComponent {
             this.loginError = '';
             this.loginForm.reset();
             this.authService.navigateDashboard(res.user.role);
-            AlertMessage.addSuccessAlert("Login is successfull !");
+            this.alertMessage.addSuccessAlert("Login is successfull !");
           },
           error: (err: any) => {
             const msg = ((err.error && err.error.message) ? err.error.message : err.message);
             this.loginError = err.status + ' - ' + msg;
             console.error('Login Error:', err);
-            AlertMessage.addErrorAlert(msg);
+            this.alertMessage.addErrorAlert(msg);
           },
         });
     }
@@ -78,7 +79,7 @@ export class UserLoginComponent {
           const msg = ((err.error && err.error.message) ? err.error.message : err.message);
           this.loginError = err.status + ' - ' + msg;
           console.error('Token validation Error:', err);
-          AlertMessage.addErrorAlert(msg);
+          this.alertMessage.addErrorAlert(msg);
         },
       });
   }

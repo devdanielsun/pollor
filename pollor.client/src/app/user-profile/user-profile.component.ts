@@ -32,7 +32,8 @@ export class UserProfileComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private alertMessage: AlertMessage
   ) {
     this.editUserForm = formBuilder.group({
       username: ["", Validators.required],
@@ -61,7 +62,7 @@ export class UserProfileComponent {
           const msg = ((err.error && err.error.message) ? err.error.message : err.message);
           this.userLoadingMsg = err.status + ' - ' + msg;
           console.error(err);
-          AlertMessage.addErrorAlert(msg);
+          this.alertMessage.addErrorAlert(msg);
         },
         //complete: () => { }
       });

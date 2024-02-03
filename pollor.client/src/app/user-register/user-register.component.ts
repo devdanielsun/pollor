@@ -18,7 +18,8 @@ export class UserRegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertMessage: AlertMessage
   ) {
     this.registerForm = this.fb.group({
       emailaddress: new FormControl(null, [Validators.required, Validators.pattern(this.regexEmail)]),
@@ -58,13 +59,13 @@ export class UserRegisterComponent {
             this.registerError = '';
             this.registerForm.reset();
             this.authService.navigateDashboard(res.user.role);
-            AlertMessage.addSuccessAlert("Account registration is successfull !");
+            this.alertMessage.addSuccessAlert("Account registration is successfull !");
           },
           error: (err: any) => {
             const msg = ((err.error && err.error.message) ? err.error.message : err.message);
             this.registerError = err.status + ' - ' + msg;
             console.error('Login Error:', err);
-            AlertMessage.addErrorAlert(msg);
+            this.alertMessage.addErrorAlert(msg);
           },
         });
     }
@@ -88,7 +89,7 @@ export class UserRegisterComponent {
           const msg = ((err.error && err.error.message) ? err.error.message : err.message);
           this.registerError = err.status + ' - ' + msg;
           console.error('Token validation Error:', err);
-          AlertMessage.addErrorAlert(msg);
+          this.alertMessage.addErrorAlert(msg);
         },
       });
   }
