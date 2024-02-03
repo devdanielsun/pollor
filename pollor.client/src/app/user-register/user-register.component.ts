@@ -65,9 +65,10 @@ export class UserRegisterComponent {
             AlertMessage.addSuccessAlert("Account registration is successfull !");
           },
           error: (err: any) => {
-            this.registerError = err.error.message;
+            const msg = (err.error.message ? err.error.message : err.message);
+            this.registerError = err.status + ' - ' + msg;
             console.error('Login Error:', err);
-            AlertMessage.addErrorAlert(err.error.message);
+            AlertMessage.addErrorAlert(msg);
           },
         });
     }
@@ -88,9 +89,10 @@ export class UserRegisterComponent {
           this.navigateDashboard(res.user.role);
         },
         error: (err: any) => {
-          this.registerError = err.error.message;
+          const msg = (err.error.message ? err.error.message : err.message);
+          this.registerError = err.status + ' - ' + msg;
           console.error('Token validation Error:', err);
-          AlertMessage.addErrorAlert(err.error.message);
+          AlertMessage.addErrorAlert(msg);
         },
       });
   }
