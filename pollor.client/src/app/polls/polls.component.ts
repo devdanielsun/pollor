@@ -30,7 +30,7 @@ export class PollsComponent {
           this.pollsLoaded = true;
         },
         error: (err) => {
-          const msg = (err.error.message ? err.error.message : err.message);
+          const msg = ((err.error && err.error.message) ? err.error.message : err.message);
           this.pollLoadingMsg = err.status + ' - ' + msg;
           this.pollLoadingColor = "red";
           console.error(err);
