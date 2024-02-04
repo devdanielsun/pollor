@@ -61,9 +61,9 @@ namespace pollor.Server.Controllers
             var userClaims = HttpContext.User;
             // Perform additional validation or return success response
 
-            var username = userClaims.Claims.Where(e => e.Type.EndsWith("identity/claims/name")).Select(e => e.Value).SingleOrDefault();
-            var userId = userClaims.Claims.Where(e => e.Type.EndsWith("identity/claims/nameidentifier")).Select(e => e.Value).SingleOrDefault();
-            var userRole = userClaims.Claims.Where(e => e.Type.EndsWith("identity/claims/role")).Select(e => e.Value).SingleOrDefault();
+            var username = userClaims.Claims.Where(e => e.Type.Equals("userName")).Select(e => e.Value).SingleOrDefault();
+            var userId = userClaims.Claims.Where(e => e.Type.Equals("userId")).Select(e => e.Value).SingleOrDefault();
+            var userRole = userClaims.Claims.Where(e => e.Type.Equals("userRole")).Select(e => e.Value).SingleOrDefault();
 
             try
             {

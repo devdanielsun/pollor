@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../_auth/auth.service';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { AlertMessage } from '../alert-message/alert-message';
+import { ApiService } from '../_api/api.service';
 
 @Component({
   selector: 'app-user-login',
@@ -17,24 +18,28 @@ export class UserLoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private apiService: ApiService,
     private alertMessage: AlertMessage
   ) {
     this.loginForm = formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required],
+      username: new FormControl(null, [Validators.required, Validators.minLength(4)]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       tokenLongerValid: [false, Validators.required]
     });
 
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isAuthenticated()) {
       console.log("validate user");
       this.validateUserAndRedirectToProfile(); // validate and navigate to role profile page
     }
   }
 
+  get getUsername(): AbstractControl { return this.loginForm.get('username')!; }
+  get getPassword(): AbstractControl { return this.loginForm.get('password')!; }
+
   sendLogin(): void {
     if (this.loginForm.valid) {
       this.loading = true; // Start the loading spinner
-      this.authService
+      this.apiService
         .login(this.loginForm.value)
         .pipe(
           finalize(() => {
@@ -43,19 +48,17 @@ export class UserLoginComponent {
         )
         .subscribe({
           next: (res: any) => {
-            console.log('Response:', res);
-            localStorage.setItem('token', res.token);
-            localStorage.setItem('role', res.user.role);
             this.loginError = '';
             this.loginForm.reset();
-            this.authService.navigateDashboard(res.user.role);
-            this.alertMessage.addSuccessAlert("Login is successfull !");
+            this.authService.setToken(res.token);
+            this.authService.navigateDashboard();
+            this.alertMessage.addSuccessAlert("Login is successfull", `Welcome ${res.user.username} :)`);
           },
           error: (err: any) => {
             const msg = ((err.error && err.error.message) ? err.error.message : err.message);
             this.loginError = err.status + ' - ' + msg;
             console.error('Login Error:', err);
-            this.alertMessage.addErrorAlert(msg);
+            this.alertMessage.addErrorAlert("Login error", msg);
           },
         });
     }
@@ -63,7 +66,7 @@ export class UserLoginComponent {
 
   validateUserAndRedirectToProfile(): any {
     this.loading = true; // Start the loading spinner
-    this.authService
+    this.apiService
       .validateToken()
       .pipe(
         finalize(() => {
@@ -72,14 +75,13 @@ export class UserLoginComponent {
       )
       .subscribe({
         next: (res: any) => {
-          console.log('Response:', res);
-          this.authService.navigateDashboard(res.user.role);
+          this.authService.navigateDashboard();
         },
         error: (err: any) => {
           const msg = ((err.error && err.error.message) ? err.error.message : err.message);
           this.loginError = err.status + ' - ' + msg;
           console.error('Token validation Error:', err);
-          this.alertMessage.addErrorAlert(msg);
+          this.alertMessage.addErrorAlert("Token validation Error", msg);
         },
       });
   }

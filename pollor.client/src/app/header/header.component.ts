@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../_auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -7,14 +7,27 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  isAuthenticated: boolean = false;
+  isAdmin: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
 
-  isAdmin(): boolean {
-    return this.authService.getRole().toLowerCase() == "admin";
+    this.isAuthenticated = this.authService.isAuthenticated()
+    this.isAdmin = this.authService.isRole('admin');
+
+    authService.emitToken.subscribe(token => this.changeIsAuthenticated(token));
+    authService.emitRole.subscribe(role => this.changeIsAdmin(role));
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  private changeIsAuthenticated(token: string): void {
+    this.isAuthenticated = token ? true : false;
+  }
+
+  private changeIsAdmin(role: string): void {
+    if (role && role.toLowerCase() == 'admin') {
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
+    }
   }
 }

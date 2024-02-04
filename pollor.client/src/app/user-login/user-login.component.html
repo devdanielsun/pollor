@@ -1,33 +1,58 @@
 <div class="card">
     <h5 class="card-header p-3">Login to POLLOR</h5>
     <div class="card-body p-4">
-        <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && sendLogin()" class="container card-text">
-            <br />
-            <div class="form-group form-floating mb-3">
-                <input formControlName="username" type="text" placeholder="Username" class="form-control" id="floatingInput">
-                <label for="floatingInput">Username</label>
+      <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && sendLogin()" class="container card-text">
+        <br />
+        <!-- Username -->
+        <div class="form-group form-floating mb-3">
+          <input formControlName="username" type="text" placeholder="Username" class="form-control" id="floatingUsernameInput">
+          <label for="floatingUsernameInput">Username</label>
+          <!-- Username validation -->
+          <div *ngIf="getUsername.invalid && (getUsername.dirty || getUsername.touched)" class="alert alert-danger">
+            <div *ngIf="getUsername.errors?.required">
+              Username is required.
             </div>
-            <div class="form-group form-floating mb-3">
-                <input formControlName="password" type="password" placeholder="Password" class="form-control" id="floatingPassword">
-                <label for="floatingPassword">Password</label>
+            <div *ngIf="getUsername.errors?.minlength">
+              Minimal length should be 4.
             </div>
-            <div class="form-group form-check mb-3">
-                <input formControlName="tokenLongerValid" type="checkbox" class="form-check-input" id="longLoggedin">
-                <label class="form-check-label" for="longLoggedin">
-                    Stay loggedin for 30 days
-                </label>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group has-validation mb-3">
+          <div class="form-group form-floating">
+            <input formControlName="password" type="password" placeholder="Password" class="form-control" id="floatingPassword">
+            <label for="floatingPassword">Password</label>
+            <!-- Password validation -->
+            <div *ngIf="getPassword.invalid && (getPassword.dirty || getPassword.touched)" class="alert alert-danger">
+              <div *ngIf="getPassword.errors?.required">
+                Password is required.
+              </div>
+              <div *ngIf="getPassword.errors?.minlength">
+                Minimal length should be 8.
+              </div>
             </div>
-            <br />
-            <div *ngIf="!loading">
-                <input type="submit" value="Login" class="btn btn-primary" />
-            </div>
-            <div *ngIf="loading" >
-                <button class="btn btn-primary" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                </button>
-            </div>
-        </form>
-        {{ loginError }}
+          </div>
+        </div>
+
+        <!-- Check to stay longer authenticated -->
+        <div class="form-group form-check mb-3">
+          <input formControlName="tokenLongerValid" type="checkbox" class="form-check-input" id="longLoggedin">
+          <label class="form-check-label" for="longLoggedin">
+            Stay loggedin for 30 days
+          </label>
+        </div>
+        <br />
+        <div *ngIf="!loading">
+          <input type="submit" value="Login" class="btn btn-primary" />
+        </div>
+        <div *ngIf="loading">
+          <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Loading...
+          </button>
+        </div>
+      </form>
+        <div class="bg-danger text-white m-3 p-3" *ngIf="loginError" >{{ loginError }}</div>
     </div>
 </div>

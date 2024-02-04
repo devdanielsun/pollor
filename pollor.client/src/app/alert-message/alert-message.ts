@@ -16,7 +16,7 @@ const ALERTS: Alert[] = [
 ];
 
 @Component({
-  selector: 'ngbd-alert-message',
+  selector: 'app-alert-message',
   standalone: true,
   imports: [NgbAlertModule],
   templateUrl: './alert-message.html',
@@ -41,7 +41,7 @@ export class AlertMessage {
     this.alerts = [];
   }
 
-  addAlert(alertType: string, alertTitle: string, alertMessage: string, timeout: number = 10000) {
+  addAlert(alertType: string, alertTitle: string, alertMessage: string, timeout: number = 6000) {
     const newAlert: Alert = {
       type: alertType,
       title: alertTitle,
@@ -56,12 +56,16 @@ export class AlertMessage {
   }
 
 
-  addSuccessAlert(alertMessage: string) {
-    this.addAlert("success", "Success!", alertMessage);
+  addSuccessAlert(alertTitle: string, alertMessage: string) {
+    this.addAlert("success", alertTitle, alertMessage);
   }
 
-  addErrorAlert(alertMessage: string) {
-    this.addAlert("danger", "An error occured", alertMessage);
+  addInfoAlert(alertTitle: string, alertMessage: string) {
+    this.addAlert("info", alertTitle, alertMessage);
+  }
+
+  addErrorAlert(alertTitle: string, alertMessage: string) {
+    this.addAlert("danger", alertTitle, alertMessage, 12000);
   }
 
   getAlertMessages() {

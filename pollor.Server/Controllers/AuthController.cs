@@ -128,7 +128,7 @@ public class AuthController : ControllerBase
 
     [HttpPost("validate")]
     [Authorize]
-    public IActionResult Validate([FromBody] ValidateTokenModel validateTokenModel)
+    public IActionResult Validate()
     {
         // Retrieve the JWT token from the Authorization header
         var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
@@ -145,9 +145,9 @@ public class AuthController : ControllerBase
         var userClaims = HttpContext.User;
         // Perform additional validation or return success response
 
-        var username = userClaims.Claims.Where(e => e.Type.EndsWith("identity/claims/name")).Select(e => e.Value).SingleOrDefault();
-        var userId = userClaims.Claims.Where(e => e.Type.EndsWith("identity/claims/nameidentifier")).Select(e => e.Value).SingleOrDefault();
-        var userRole = userClaims.Claims.Where(e => e.Type.EndsWith("identity/claims/role")).Select(e => e.Value).SingleOrDefault();
+        var username = userClaims.Claims.Where(e => e.Type.Equals("userName")).Select(e => e.Value).SingleOrDefault();
+        var userId = userClaims.Claims.Where(e => e.Type.Equals("userId")).Select(e => e.Value).SingleOrDefault();
+        var userRole = userClaims.Claims.Where(e => e.Type.Equals("userRole")).Select(e => e.Value).SingleOrDefault();
 
         try
         {
@@ -162,7 +162,7 @@ public class AuthController : ControllerBase
                 {
                     return NotFound(new { message = "User not found..." });
                 }
-                return Ok(new AuthenticatedResponse { token = validateTokenModel.token, user = user });
+                return Ok(new AuthenticatedResponse { token = token, user = user });
             }
         }
         catch (Exception ex)
@@ -175,9 +175,9 @@ public class AuthController : ControllerBase
     private JwtSecurityToken GetJwtTokenOptions (int tokenValidForXDays, UserModel user) {
         var jwtClaims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.username!),
-            new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
-            new Claim(ClaimTypes.Role, user.role!)
+            new Claim("userName", user.username!),
+            new Claim("userId", user.id.ToString()),
+            new Claim("userRole", user.role!)
         };
 
         string jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!;

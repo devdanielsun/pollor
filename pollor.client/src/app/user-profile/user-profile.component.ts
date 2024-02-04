@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IUser } from '../../interfaces/user.interface';
-import { ApiService } from '../../services/api.service';
+import { IUser } from '../_interfaces/user.interface';
+import { ApiService } from '../_api/api.service';
 import { AlertMessage } from '../alert-message/alert-message';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { AuthService } from '../_auth/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -31,18 +30,15 @@ export class UserProfileComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router,
     private apiService: ApiService,
     private alertMessage: AlertMessage
   ) {
-    this.editUserForm = formBuilder.group({
+    this.editUserForm = this.formBuilder.group({
       username: ["", Validators.required],
       emailaddress: ["", Validators.required],
       first_name: ["", Validators.required],
       last_name: ["", Validators.required]
     });
-
-    this.authService.logoutIfUserDoesNotValidate(); // redirect if not loggedin or token is not ok
   }
 
   ngOnInit() {
@@ -54,15 +50,13 @@ export class UserProfileComponent {
       .subscribe({
         next: (response) => {
           this.user = response;
-          console.log(this.user);
-
           this.userLoaded = true;
         },
         error: (err) => {
           const msg = ((err.error && err.error.message) ? err.error.message : err.message);
           this.userLoadingMsg = err.status + ' - ' + msg;
           console.error(err);
-          this.alertMessage.addErrorAlert(msg);
+          this.alertMessage.addErrorAlert("Error loading User", msg);
         },
         //complete: () => { }
       });
