@@ -31,7 +31,7 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-end w-100 p-2">
             <!-- User Login -->
-            <li *ngIf="!isLoggedIn()" class="mb-1">
+            <li *ngIf="!isAuthenticated" class="mb-1">
               <a data-mdb-ripple-init
                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" 
                  class="btn btn-outline-dark btn-block w-100"
@@ -43,7 +43,7 @@
               </a>
             </li>
             <!-- User Register -->
-            <li *ngIf="!isLoggedIn()" class="mb-1">
+            <li *ngIf="!isAuthenticated" class="mb-1">
               <a data-mdb-ripple-init
                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                  class="btn btn-outline-dark btn-block w-100"
@@ -55,7 +55,7 @@
               </a>
             </li>
             <!-- User Profile -->
-            <li *ngIf="isLoggedIn()" class="mb-1">
+            <li *ngIf="isAuthenticated" class="mb-1">
               <a data-mdb-ripple-init
                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                  class="btn btn-outline-dark btn-block w-100"
@@ -67,7 +67,7 @@
               </a>
             </li>
             <!-- Admin Profile -->
-            <li *ngIf="isLoggedIn() && isAdmin()" class="mb-1">
+            <li *ngIf="isAuthenticated && isAdmin" class="mb-1">
               <a data-mdb-ripple-init
                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                  class="btn btn-outline-dark btn-block w-100"
@@ -78,11 +78,11 @@
                 Admin Profile
               </a>
             </li>
-            <li *ngIf="isLoggedIn()">
+            <li *ngIf="isAuthenticated">
               <hr class="dropdown-divider">
             </li>
             <!-- Logout -->
-            <li *ngIf="isLoggedIn()" class="mb-1">
+            <li *ngIf="isAuthenticated" class="mb-1">
               <a data-mdb-ripple-init
                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                  class="btn btn-outline-dark btn-block w-100"

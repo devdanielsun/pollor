@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
+import { IAuth } from '../_interfaces/auth.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,4 +27,21 @@ export class ApiService {
   }
 
   // Add methods for other HTTP verbs like put, patch, delete, etc.
+
+  /* specific auth calls */
+
+  login<T>(body: any): Observable<T> {
+    return this.post<T>('api/auth/login', body);
+  }
+
+  register<T>(body: any): Observable<T> {
+    return this.post<T>('api/auth/register', body);
+  }
+
+  validateToken<T>(): Observable<T> {
+    const auth: IAuth = {
+      token: localStorage.getItem("token")!
+    }
+    return this.post<T>('api/auth/validate', auth);
+  }
 }

@@ -56,12 +56,16 @@ export class AlertMessage {
   }
 
 
-  addSuccessAlert(alertMessage: string) {
-    this.addAlert("success", "Success!", alertMessage);
+  addSuccessAlert(alertTitle: string, alertMessage: string) {
+    this.addAlert("success", alertTitle, alertMessage);
   }
 
-  addErrorAlert(alertMessage: string) {
-    this.addAlert("danger", "An error occured", alertMessage);
+  addInfoAlert(alertTitle: string, alertMessage: string) {
+    this.addAlert("info", alertTitle, alertMessage);
+  }
+
+  addErrorAlert(alertTitle: string, alertMessage: string) {
+    this.addAlert("danger", alertTitle, alertMessage);
   }
 
   getAlertMessages() {

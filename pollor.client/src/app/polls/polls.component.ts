@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../../services/api.service';
-import { IPolls } from '../../interfaces/polls.interface';
+import { ApiService } from '../_api/api.service';
+import { IPolls } from '../_interfaces/polls.interface';
 
 import { AlertMessage } from '../alert-message/alert-message';
 
@@ -37,7 +37,7 @@ export class PollsComponent {
           this.pollLoadingMsg = err.status + ' - ' + msg;
           this.pollLoadingColor = "red";
           console.error(err);
-          this.alertMessage.addErrorAlert(msg);
+          this.alertMessage.addInfoAlert("Cannot fetch polls", msg);
         },
         //complete: () => { }
       });
