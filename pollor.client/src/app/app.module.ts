@@ -1,5 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +28,7 @@ import { UserLogoutComponent } from './user-logout/user-logout.component';
   declarations: [
     AppComponent,
     HeaderComponent,
+    FooterComponent,
     HomeComponent,
     PageNotFoundComponent,
     PollsComponent,
@@ -38,17 +40,17 @@ import { UserLogoutComponent } from './user-logout/user-logout.component';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     RouterModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     NgbModule,
+    AlertMessage,
     RouterOutlet,
     RouterLink,
-    RouterLinkActive,
-    FooterComponent,
-    AlertMessage
+    RouterLinkActive
   ],
   providers: [
     {

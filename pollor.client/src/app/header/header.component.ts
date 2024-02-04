@@ -24,6 +24,10 @@ export class HeaderComponent {
   }
 
   private changeIsAdmin(role: string): void {
-    this.isAdmin = role.toLowerCase() == 'admin' ? true : false;
+    if (role && role.toLowerCase() == 'admin') {
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
+    }
   }
 }

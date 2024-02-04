@@ -1,5 +1,7 @@
 import { NgModule, inject } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardService as AuthGuard } from './_auth/auth-guard.service';
+import { RoleGuardService as RoleGuard } from './_auth/role-guard.service';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PollsComponent } from './polls/polls.component';

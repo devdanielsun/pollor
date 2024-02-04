@@ -5,3 +5,9 @@
     width: 30%;
     z-index: 120;
 }
+
+@media screen and (max-width:767px) {
+  .alert-messages {
+    width: 70%;
+  }
+}
