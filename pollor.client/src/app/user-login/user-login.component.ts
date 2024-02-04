@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../_auth/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { AlertMessage } from '../alert-message/alert-message';
 import { ApiService } from '../_api/api.service';
@@ -22,8 +22,8 @@ export class UserLoginComponent {
     private alertMessage: AlertMessage
   ) {
     this.loginForm = formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required],
+      username: new FormControl(null, [Validators.required, Validators.minLength(4)]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       tokenLongerValid: [false, Validators.required]
     });
 
@@ -32,6 +32,9 @@ export class UserLoginComponent {
       this.validateUserAndRedirectToProfile(); // validate and navigate to role profile page
     }
   }
+
+  get getUsername(): AbstractControl { return this.loginForm.get('username')!; }
+  get getPassword(): AbstractControl { return this.loginForm.get('password')!; }
 
   sendLogin(): void {
     if (this.loginForm.valid) {
