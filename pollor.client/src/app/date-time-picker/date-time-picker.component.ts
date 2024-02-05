@@ -42,7 +42,7 @@ export class DateTimePickerComponent
   dateString: string | null | undefined;
 
   @Input()
-  inputDatetimeFormat = "d MMM yyyy - H:mm:ss";
+  inputDatetimeFormat = "d MMM yyyy - H:mm:00 (z)";
   @Input()
   hourStep = 1;
   @Input()
@@ -50,7 +50,7 @@ export class DateTimePickerComponent
   @Input()
   secondStep = 30;
   @Input()
-  seconds = true;
+  seconds = false;
 
   @Input()
   disabled = false;

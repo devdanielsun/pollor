@@ -62,37 +62,40 @@
         </div>
       </div>
 
-        <!-- Poll Closing Date -->
-        <div class="form-group poll-closing-date">
-          <label for="pollClosingDate">Poll Closing Date</label>
-          <app-date-time-picker formControlName="pollClosingDate" name="pollClosingDate"></app-date-time-picker>
-          <!-- Poll Closing Date validation -->
-          <div  class="alert alert-danger" *ngIf="pollClosingDate.errors?.required">
-            Poll Closing Date is required.
-          </div>
-          <div  class="alert alert-danger" *ngIf="pollClosingDate.errors?.nonValidDate">
-            Poll Closing Date must be a valid date.
-          </div>
+      <!-- Poll Closing Date -->
+      <div class="form-group poll-closing-date">
+        <label for="pollClosingDate">Poll Closing Date</label>
+        <app-date-time-picker formControlName="pollClosingDate" name="pollClosingDate"></app-date-time-picker>
+        <!-- Poll Closing Date validation -->
+        <div class="alert alert-danger" *ngIf="pollClosingDate.errors?.required">
+          Poll Closing Date is required.
         </div>
+        <div class="alert alert-danger" *ngIf="pollClosingDate.errors?.nonValidDate && !pollClosingDate.errors?.closingDateNotSelectedYet">
+          Poll Closing Date must be a valid date.
+        </div>
+        <div class="alert alert-danger" *ngIf="pollClosingDate.errors?.closingDateIsThePast && !pollClosingDate.errors?.closingDateNotSelectedYet">
+          Poll Closing Date must be a future date.
+        </div>
+      </div>
 
-        <br />
-        <div *ngIf="!loading && createPollForm.status == 'VALID'">
-          <input type="submit" value="Create poll" class="btn btn-primary" />
-        </div>
-        <div *ngIf="loading">
-          <button class="btn btn-primary" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Loading...
-          </button>
-        </div>
-        <div *ngIf="createPollForm.status != 'VALID'">
-          <button class="btn btn-primary" type="button" disabled>
-            Create poll
-          </button>
-        </div>
-</form>
+      <br />
+      <div *ngIf="!loading && createPollForm.status == 'VALID'">
+        <input type="submit" value="Create poll" class="btn btn-primary" />
+      </div>
+      <div *ngIf="loading">
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
+      </div>
+      <div *ngIf="createPollForm.status != 'VALID'">
+        <button class="btn btn-primary" type="button" disabled>
+          Create poll
+        </button>
+      </div>
+    </form>
     <div class="bg-danger text-white m-3 p-3" *ngIf="createPollError">
       {{ createPollError }}
-</div>
+    </div>
   </div>
 </div>

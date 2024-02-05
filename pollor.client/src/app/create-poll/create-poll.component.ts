@@ -19,19 +19,24 @@ export class CreatePollComponent {
   dateModel: Date = new Date();
   stringDateModel: string = new Date().toString();
 
+  initClosingDate: Date = new Date(new Date(2000, 0, 1, 1));
+
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
     private alertMessage: AlertMessage
   ) {
-    this.initForm();
+    this.createPollForm = this.initForm();
+
+    this.addAnswer();
+    this.addAnswer();
   }
 
   initForm() {
-    this.createPollForm = this.fb.group({
+    return this.fb.group({
       pollQuestion: new FormControl(null, [Validators.required, Validators.maxLength(512)]),
       pollAnswers: new FormArray([]),
-      pollClosingDate: new FormControl(new Date(2000, 0), [Validators.required])
+      pollClosingDate: new FormControl(this.initClosingDate, [Validators.required])
     },
       {
         validators: [
@@ -40,9 +45,6 @@ export class CreatePollComponent {
         ]
       } as AbstractControlOptions
     );
-
-    this.addAnswer();
-    this.addAnswer();
   }
 
   addAnswer() {
@@ -68,13 +70,31 @@ export class CreatePollComponent {
 
       if (
         control.errors &&
-        !control.errors.isValid
+        !control.errors.nonValidDate &&
+        !control.errors.closingDateNotSelectedYet &&
+        !control.errors.closingDateIsThePast
       ) {
         return;
       }
 
-      const date = new Date(control.value);
-      const isValid = !isNaN(date.valueOf());
+      if (control.value == this.initClosingDate) {
+        control.setErrors({ closingDateNotSelectedYet: true });
+        return;
+      } else {
+        control.setErrors(null);
+      }
+
+      const closingDate = new Date(control.value);
+      const now = new Date(Date.now());
+
+      if (closingDate.getTime() < now.getTime()) {
+        control.setErrors({ closingDateIsThePast: true });
+        return;
+      } else {
+        control.setErrors(null);
+      }
+
+      const isValid = !isNaN(closingDate.valueOf());
       if (!isValid) {
         control.setErrors({ nonValidDate: true });
       } else {

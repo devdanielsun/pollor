@@ -18,26 +18,36 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'account/login',
+    path: 'account',
+    children: [
+      {
+        path: '',
+        component: UserProfileComponent,
+        canActivate: [() => inject(AuthGuard).canActivate()],
+      },
+      {
+        path: 'login',
     component: UserLoginComponent
   },
   {
-    path: 'account/register',
+        path: 'register',
     component: UserRegisterComponent
   },
   {
-    path: 'account/logout',
+        path: 'logout',
     component: UserLogoutComponent
   },
   {
-    path: 'account/profile',
+        path: 'profile',
     component: UserProfileComponent,
     canActivate: [() => inject(AuthGuard).canActivate()]
   },
   {
-    path: 'account/admin-profile',
+        path: 'adminpanel',
     component: UserAdminProfileComponent,
     canActivate: [() => inject(RoleGuard).canActivate('admin')]
+  },
+    ]
   },
   {
     path: 'polls',
