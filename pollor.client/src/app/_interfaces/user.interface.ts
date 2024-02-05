@@ -1,4 +1,4 @@
-import { IPolls } from "./polls.interface";
+import { IPoll } from "./polls.interface";
 
 export interface IUser {
   id: number;
@@ -8,7 +8,7 @@ export interface IUser {
   last_name: string;
   role: string;
   created_at: Date;
-  polls: IPolls[];
+  polls: IPoll[];
 }
 
 export interface IUserChangePassword {

@@ -1,10 +1,16 @@
-import { IAnswers } from "./answers.interface";
+import { IAnswer, ICreateAnswer } from "./answers.interface";
 
-export interface IPolls {
+export interface IPoll {
   id: string;
   user_id: number;
   question: number;
   ending_date: Date;
   created_at: Date;
-  answers: IAnswers[];
+  answers: IAnswer[];
+}
+
+export interface ICreatePoll {
+  question: number;
+  ending_date: Date;
+  answers: ICreateAnswer[];
 }

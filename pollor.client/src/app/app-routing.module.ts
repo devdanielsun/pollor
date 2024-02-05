@@ -10,6 +10,8 @@ import { UserRegisterComponent } from './user-register/user-register.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profile.component';
 import { UserLogoutComponent } from './user-logout/user-logout.component';
+import { CreatePollComponent } from './create-poll/create-poll.component';
+import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   {
@@ -41,6 +43,15 @@ const routes: Routes = [
   {
     path: 'polls',
     component: PollsComponent
+  },
+  {
+    path: 'create-poll',
+    component: CreatePollComponent,
+    canActivate: [() => inject(AuthGuard).canActivate()]
+  },
+  {
+    path: 'test',
+    component: TestComponent
   },
   {
     path: '**',

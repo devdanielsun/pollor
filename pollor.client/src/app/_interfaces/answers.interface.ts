@@ -1,10 +1,14 @@
-import { IPolls } from "./polls.interface";
-import { IVotes } from "./votes.interface";
+import { IPoll } from "./polls.interface";
+import { IVote } from "./votes.interface";
 
-export interface IAnswers{
+export interface IAnswer {
   id: string;
-  poll_id: IPolls;
+  poll_id: IPoll;
   poll_answer: string;
   created_at: Date;
-  votes: IVotes[];
+  votes: IVote[];
+}
+
+export interface ICreateAnswer {
+  poll_answer: string;
 }

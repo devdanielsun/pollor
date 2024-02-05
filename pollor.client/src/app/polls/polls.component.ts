@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../_api/api.service';
-import { IPolls } from '../_interfaces/polls.interface';
+import { IPoll } from '../_interfaces/polls.interface';
 
 import { AlertMessage } from '../alert-message/alert-message';
 
@@ -10,7 +10,7 @@ import { AlertMessage } from '../alert-message/alert-message';
   styleUrl: './polls.component.css'
 })
 export class PollsComponent {
-  public polls: IPolls[] = [];
+  public polls: IPoll[] = [];
 
   public pollsLoaded: boolean = false;
   public pollLoadingMsg: string = "Loading polls...";
@@ -26,7 +26,7 @@ export class PollsComponent {
   }
 
   getPolls() {
-    this.apiService.get<IPolls[]>('api/polls')
+    this.apiService.get<IPoll[]>('api/polls')
       .subscribe({
         next: (response) => {
           this.polls = response;
