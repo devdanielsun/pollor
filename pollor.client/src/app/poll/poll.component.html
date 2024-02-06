@@ -1,0 +1,35 @@
+<p>This component demonstrates fetching data from the server.</p>
+
+<div class="card">
+  <h5 class="card-header p-3">Cast you vote</h5>
+  <div class="card-body p-4">
+
+    <p *ngIf="!pollLoaded"><em [style.color]="pollLoadingColor">{{ pollLoadingMsg }}</em></p>
+
+    <p *ngIf="pollLoaded && poll == null"><em>No poll data found</em></p>
+
+    <div *ngIf="poll && poll.answers.length > 0" class="table table-sm table-bordered table-hover w-auto">
+
+      <h4>{{ poll.question }}</h4>
+
+      <table class="table table-sm table-hover w-50">
+        <thead>
+          <tr>
+            <th scope="col" class="w-75">Answer</th>
+            <th scope="col">Total votes</th>
+            <th scope="col">Cast vote</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let answer of poll.answers">
+            <td scope="row">{{ answer.poll_answer }}</td>
+            <td scope="row">{{ answer.votes.length }}</td>
+            <td scope="row">
+              <button class="btn btn-primary">Cast vote</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -25,6 +25,7 @@ import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profi
 import { UserLogoutComponent } from './user-logout/user-logout.component';
 import { CreatePollComponent } from './create-poll/create-poll.component';
 import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
+import { PollComponent } from './poll/poll.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { DateTimePickerComponent } from './date-time-picker/date-time-picker.com
     UserAdminProfileComponent,
     UserLogoutComponent,
     CreatePollComponent,
-    DateTimePickerComponent
+    DateTimePickerComponent,
+    PollComponent
   ],
   imports: [
     BrowserModule,

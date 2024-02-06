@@ -11,6 +11,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profile.component';
 import { UserLogoutComponent } from './user-logout/user-logout.component';
 import { CreatePollComponent } from './create-poll/create-poll.component';
+import { PollComponent } from './poll/poll.component';
 
 const routes: Routes = [
   {
@@ -27,31 +28,35 @@ const routes: Routes = [
       },
       {
         path: 'login',
-    component: UserLoginComponent
-  },
-  {
+        component: UserLoginComponent
+      },
+      {
         path: 'register',
-    component: UserRegisterComponent
-  },
-  {
+        component: UserRegisterComponent
+      },
+      {
         path: 'logout',
-    component: UserLogoutComponent
-  },
-  {
+        component: UserLogoutComponent
+      },
+      {
         path: 'profile',
-    component: UserProfileComponent,
-    canActivate: [() => inject(AuthGuard).canActivate()]
-  },
-  {
+        component: UserProfileComponent,
+        canActivate: [() => inject(AuthGuard).canActivate()]
+      },
+      {
         path: 'adminpanel',
-    component: UserAdminProfileComponent,
-    canActivate: [() => inject(RoleGuard).canActivate('admin')]
-  },
+        component: UserAdminProfileComponent,
+        canActivate: [() => inject(RoleGuard).canActivate('admin')]
+      },
     ]
   },
   {
     path: 'polls',
     component: PollsComponent
+  },
+  {
+    path: 'poll/:id',
+    component: PollComponent
   },
   {
     path: 'create-poll',
