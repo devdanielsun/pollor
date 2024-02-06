@@ -49,11 +49,12 @@
       </td>
       <td scope="row" *ngIf="datetimeToMiliseconds(poll.created_at) < datetimeToMiliseconds(currentDate)">
         {{ convertMsToDaysAndHours(datetimeToMiliseconds(poll.ending_date) - datetimeToMiliseconds(currentDate) ) }}
-        <br />
-        <br />
-        Closing date:
-        <br />
-        <i>{{ poll.ending_date | date: 'd-M-yyyy, HH:mm (z)' }}</i>
+        <div (mouseenter)="mouseEnter(poll.id)" (mouseleave)="mouseLeave(poll.id)">
+          <i class="bi bi-info-circle-fill" style="color: dodgerblue"></i>
+        </div>
+        <div tabindex="-1" class="col" [ngStyle]="{'display':displayStyle.get(poll.id)}">
+          <i>{{ poll.ending_date | date: 'd-M-yyyy, HH:mm (z)' }}</i>
+        </div>
       </td>
       <td scope="row" *ngIf="datetimeToMiliseconds(poll.ending_date) < datetimeToMiliseconds(currentDate)">
         <button class="btn btn-outline-primary" [routerLink]="['/poll', poll.id]">View results</button>

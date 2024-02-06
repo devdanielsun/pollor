@@ -20,6 +20,7 @@ export class PollsComponent {
   public pollLoadingColor: string = "";
 
   public currentDate: Date = new Date();
+  public displayStyle: Map<string, string> = new Map<string, string>();
 
   constructor(
     private apiService: ApiService,
@@ -34,10 +35,13 @@ export class PollsComponent {
     this.apiService.get<IPoll[]>('api/polls')
       .subscribe({
         next: (response: IPoll[]) => {
-
-          for (let i = 0; i < response.length; i++) { // convert SQL date to a Date to TypeScript understands
-            response[i].ending_date = new Date(response[i].ending_date)
-            response[i].created_at = new Date(response[i].created_at)
+          // Edit received data
+          for (let i = 0; i < response.length; i++) {
+            // convert SQL date to a Date to TypeScript understands
+            response[i].ending_date = new Date(response[i].ending_date);
+            response[i].created_at = new Date(response[i].created_at);
+            // set info popup to display none;
+            this.displayStyle.set(response[i].id, "none");
           }
 
           this.polls = response;
@@ -60,10 +64,10 @@ export class PollsComponent {
 
   convertMsToDaysAndHours(milliseconds: number) {
     let seconds = Math.floor(milliseconds / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    let days = Math.floor(hours / 24);
-    const years = Math.floor(days / 365);
+    let minutes = (seconds >= 60 || seconds <= -60) ? Math.floor(seconds / 60) : 0;
+    let hours = (minutes >= 60 || minutes <= -60) ? Math.floor(minutes / 60) : 0;
+    let days = (hours >= 24 || hours <= -24) ? Math.floor(hours / 24) : 0;
+    let years = (days >= 365 || days <= -365)? Math.floor( days / 365) : 0;
 
     seconds = seconds % 60;
     minutes = minutes % 60;
@@ -72,19 +76,17 @@ export class PollsComponent {
 
     let makeStr: string = '';
 
-    if (years < 0 || days < 0 || hours < 0 && minutes < 0) {
+    if (years < 0 || days < 0 || hours < 0 || minutes < 0) {
       makeStr = "Poll is closed";
 
-      if (years < 0) {
-        makeStr += ` ${this.padTo2Digits(years)} years ago.`;
-      } else if (days < 0) {
-        makeStr += ` ${this.padTo2Digits(days)} days ago.`;
-      } else if (hours < 0) {
-        makeStr += ` ${this.padTo2Digits(hours)} hours ago.`;
-      } else if (minutes < 0) {
-        makeStr += ` ${this.padTo2Digits(minutes)} minutes ago.`;
-      }
+      if (years < 0) makeStr += ` ${this.padTo2Digits(years)} years ago.`;
+      else if (days < 0) makeStr += ` ${this.padTo2Digits(days)} days ago.`;
+      else if (hours < 0) makeStr += ` ${this.padTo2Digits(hours)} hours ago.`;
+      else if (minutes < 0) makeStr += ` ${this.padTo2Digits(minutes)} minutes ago.`;
+
     } else {
+      makeStr = "Poll open for ";
+
       if (years != 0) {
         makeStr += `${years} years, `;
         (days == 0 && hours == 0 && minutes == 0) ? makeStr += '.' : makeStr += ', ';
@@ -97,9 +99,7 @@ export class PollsComponent {
         makeStr += `${hours} hours`;
         minutes == 0 ? makeStr += '.' : makeStr += ', ';
       }
-      if (minutes != 0) {
-        makeStr += `and ${minutes} minutes.`;
-      }
+      if (minutes != 0) makeStr += `and ${minutes} minutes.`;
     }
 
     return makeStr;
@@ -107,5 +107,13 @@ export class PollsComponent {
 
   padTo2Digits(num: number) {
     return num.toString().padStart(2, '0');
+  }
+
+  mouseEnter(pollId: string) {
+    this.displayStyle.set(pollId, "block");
+  }
+
+  mouseLeave(pollId: string) {
+    this.displayStyle.set(pollId, "none");
   }
 }
