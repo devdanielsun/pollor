@@ -2,14 +2,13 @@ nav {
   background-color: seagreen;
 }
 
-a.nav-link.active {
+a.nav-link.active, a.nav-link:hover, button.navbar-toggler {
   background-color: white;
   color: black !important;
 }
 
-a.nav-link:hover {
-  background-color: white;
-  color: black !important;
+ button.navbar-toggler:hover {
+  background-color: lightgray;
 }
 
 .dropdown-menu {
