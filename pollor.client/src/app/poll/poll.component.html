@@ -18,6 +18,7 @@
             <th scope="col" class="w-75">Answer</th>
             <th scope="col">Total votes</th>
             <th scope="col">Cast vote</th>
+            <th scope="col">Voters Data</th>
           </tr>
         </thead>
         <tbody>
@@ -25,11 +26,41 @@
             <td scope="row">{{ answer.poll_answer }}</td>
             <td scope="row">{{ answer.votes.length }}</td>
             <td scope="row">
-              <button class="btn btn-primary">Cast vote</button>
+              <button class="btn btn-primary" (click)="castVote(answer)">Cast vote</button>
+            </td>
+            <td>
+              <table class="table table-sm table-hover w-50">
+                <thead>
+                  <tr>
+                    <th scope="col">ipv4</th>
+                    <th scope="col">ipv6</th>
+                    <th scope="col">mac</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let vote of answer.votes">
+                    <td scope="row">{{ vote.ipv4_address }}</td>
+                    <td scope="row">{{ vote.ipv6_address }}</td>
+                    <td scope="row">{{ vote.mac_address }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </td>
           </tr>
         </tbody>
       </table>
+      <span *ngIf="voteMsg" class="bg-danger text-white m-3 p-3">
+        {{ voteMsg }}
+      </span>
+
+      <script type="application/javascript">
+        function getIP(json) {
+          document.write("My public IP address is: ", json.ip);
+        }
+      </script>
+
+      <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+
     </div>
   </div>
 </div>
