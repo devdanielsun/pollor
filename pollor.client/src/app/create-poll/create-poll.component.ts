@@ -3,8 +3,8 @@ import { AbstractControl, AbstractControlOptions, FormArray, FormBuilder, FormCo
 import { ApiService } from '../_api/api.service';
 import { finalize } from 'rxjs';
 import { AlertMessage } from '../alert-message/alert-message';
-import { ICreatePoll } from '../_interfaces/polls.interface';
-import { ICreateAnswer } from "../_interfaces/answers.interface";
+import { ICreatePoll } from '../_interfaces/poll.interface';
+import { ICreateAnswer } from "../_interfaces/answer.interface";
 
 @Component({
   selector: 'app-create-poll',

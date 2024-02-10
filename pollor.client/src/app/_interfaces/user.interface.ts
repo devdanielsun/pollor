@@ -1,4 +1,4 @@
-import { IPoll } from "./polls.interface";
+import { IPoll } from "./poll.interface";
 
 export interface IUser {
   id: number;

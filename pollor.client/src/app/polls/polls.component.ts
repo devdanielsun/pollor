@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { formatDate } from '@angular/common';
-
 import { ApiService } from '../_api/api.service';
-import { IPoll } from '../_interfaces/polls.interface';
-
+import { IPoll } from '../_interfaces/poll.interface';
 import { AlertMessage } from '../alert-message/alert-message';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-polls',

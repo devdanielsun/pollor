@@ -1,5 +1,5 @@
-import { IPoll } from "./polls.interface";
-import { IVote } from "./votes.interface";
+import { IPoll } from "./poll.interface";
+import { IVote } from "./vote.interface";
 
 export interface IAnswer {
   id: string;

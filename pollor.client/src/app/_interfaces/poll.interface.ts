@@ -1,4 +1,4 @@
-import { IAnswer, ICreateAnswer } from "./answers.interface";
+import { IAnswer, ICreateAnswer } from "./answer.interface";
 
 export interface IPoll {
   id: string;
