@@ -57,8 +57,8 @@ GO
 CREATE TABLE [dbo].[votes](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[answer_id] [int] NOT NULL,
-	[ipv4_address] [varbinary](4) NULL,
-	[ipv6_address] [varbinary](16) NULL,
+	[ipv4_address] [varchar](15) NULL,
+	[ipv6_address] [varchar](45) NULL,
 	[mac_address] [char](12) NULL,
 	[voted_at] [datetime2](7) NOT NULL,
 	[created_at] [datetime2](7) NOT NULL,

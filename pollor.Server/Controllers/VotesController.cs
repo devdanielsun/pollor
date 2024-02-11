@@ -58,12 +58,29 @@ namespace pollor.Server.Controllers
         }
 
         [HttpPost("vote")]
-        [Authorize]
         public IActionResult AddVote(VoteModel vote)
         {
             try {
                 using (var context = new PollorDbContext()) {
-                    EntityEntry<VoteModel> newVote = context.Votes.Add(vote);
+                    AnswerModel? answer = context.Answers
+                        .Where(a => a.id.Equals(vote.answer_id))
+                            .Where(a => a.Votes.Any(v => v.ipv4_address == vote.ipv4_address || v.ipv6_address == vote.ipv6_address))
+                        .FirstOrDefault();
+                    if (answer != null) {
+                        return Conflict(new { message = "You have already voted on this poll" });
+                    }
+                }
+
+                DateTime now = DateTime.Now;
+                using (var context = new PollorDbContext()) {
+                    EntityEntry<VoteModel> newVote = context.Votes.Add(new VoteModel()
+                        {
+                            answer_id = vote.answer_id,
+                            ipv4_address = vote.ipv4_address ?? null,
+                            ipv6_address = vote.ipv6_address ?? null,
+                            created_at = now,
+                            voted_at = now
+                        });
                     context.SaveChanges();
 
                     if (newVote == null) {

@@ -1,18 +1,16 @@
-import { IAnswer } from "./answer.interface";
-
 export interface IVote {
-  id: string;
-  answer_id: IAnswer;
-  ipv4_address: ArrayBuffer;
-  ipv6_address: ArrayBuffer;
-  mac_address: ArrayBuffer;
+  id: number;
+  answer_id: number;
+  ipv4_address: string;
+  ipv6_address: string;
+  mac_address: string;
   voted_at: Date;
   created_at: Date;
 }
 
 export interface ICreateVote {
-  answer_id: IAnswer;
-  ipv4_address: ArrayBuffer;
-  ipv6_address: ArrayBuffer;
-  mac_address: ArrayBuffer;
+  answer_id: number;
+  ipv4_address: string | null| undefined;
+  ipv6_address: string | null | undefined;
+  mac_address: string | null | undefined ;
 }

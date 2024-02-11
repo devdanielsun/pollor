@@ -2,7 +2,7 @@ import { IPoll } from "./poll.interface";
 import { IVote } from "./vote.interface";
 
 export interface IAnswer {
-  id: string;
+  id: number;
   poll_id: IPoll;
   poll_answer: string;
   created_at: Date;
