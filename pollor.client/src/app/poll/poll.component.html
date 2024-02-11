@@ -1,0 +1,50 @@
+<div class="card">
+  <h5 class="card-header p-3">Cast you vote</h5>
+  <div class="card-body p-4">
+
+    <p *ngIf="!pollLoaded"><em [style.color]="pollLoadingColor">{{ pollLoadingMsg }}</em></p>
+
+    <p *ngIf="pollLoaded && poll == null"><em>No poll data found</em></p>
+
+    <div *ngIf="poll && poll.answers.length > 0" class="table table-sm table-bordered table-hover w-auto">
+
+      <h4>{{ poll.question }}</h4>
+
+      <table class="table table-bordered table-sm table-hover w-50">
+        <thead>
+          <tr>
+            <th scope="col" class="w-50">Answer</th>
+            <th scope="col">Total votes</th>
+            <th scope="col">Cast vote</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let answer of poll.answers">
+            <td scope="row">{{ answer.poll_answer }}</td>
+            <td scope="row">{{ answer.votes.length }}</td>
+            <td scope="row">
+              <div *ngIf="!alreadyVoted">
+                <button class="btn btn-primary" (click)="castVote(answer.id)" *ngIf="!voteCastLoading">Cast vote</button>
+                <button class="btn btn-primary" disabled *ngIf="voteCastLoading">Cast vote</button>
+              </div>
+              <div *ngIf="alreadyVoted">
+                You have voted!
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="my-4">
+        <span *ngIf="voteCastLoading" class="bg-info text-white p-3">
+          {{ voteMsg }}
+        </span>
+        <span *ngIf="voteMsg && !voteCastSuccess && !voteCastLoading  && !alreadyVoted" class="bg-danger text-white p-3">
+          {{ voteMsg }}
+        </span>
+        <span *ngIf="voteMsg && ((voteCastSuccess  && !voteCastLoading) || alreadyVoted)" class="bg-success text-white p-3">
+          {{ voteMsg }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

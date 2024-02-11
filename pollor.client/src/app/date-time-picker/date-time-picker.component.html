@@ -1,0 +1,56 @@
+<div class="input-group mr-2">
+  <input [ngClass]="ngControl.valid ? 'ng-valid' : 'ng-invalid'"
+         class="form-control"
+         (blur)="inputBlur($event)"
+         [ngModel]="dateString | date: inputDatetimeFormat"
+         (change)="onInputChange($event)"
+         [disabled]="disabled" readonly/>
+
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary"
+            [ngbPopover]="calendarContent"
+            [disabled]="disabled"
+            type="button">
+      <i class="bi bi-calendar-event" style="font-size: 20px; float: left;"></i>
+    </button>
+  </div>
+</div>
+
+<ng-template #calendarContent>
+  <div>
+    <ngb-datepicker id="dp"
+                    #dp
+                    name="datepicker"
+                    [ngModel]="datetime"
+                    (ngModelChange)="onDateChange($event, dp)"></ngb-datepicker>
+
+    <div class="mt-auto">
+      <ngb-timepicker #tp
+                      name="timepicker"
+                      [ngModel]="datetime"
+                      (ngModelChange)="onTimeChange($event)"
+                      [seconds]="seconds"
+                      [hourStep]="hourStep"
+                      [minuteStep]="minuteStep"
+                      [secondStep]="secondStep">
+      </ngb-timepicker>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col d-flex align-items-center justify-content-center">
+      <button class="btn btn-outline-primary" type="button">
+        Today
+      </button>
+    </div>
+    <div class="col d-flex align-items-center justify-content-center">
+      <button class="btn btn-outline-primary" type="button">
+        Now
+      </button>
+    </div>
+    <div class="col d-flex align-items-center justify-content-center">
+      <button class="btn btn-outline-primary" type="button">
+          Next week
+        </button>
+</div>
+  </div>
+</ng-template>

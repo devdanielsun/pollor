@@ -2,14 +2,13 @@ nav {
   background-color: seagreen;
 }
 
-a.nav-link.active {
+a.nav-link.active, a.nav-link:hover, button.navbar-toggler {
   background-color: white;
   color: black !important;
 }
 
-a.nav-link:hover {
-  background-color: white;
-  color: black !important;
+ button.navbar-toggler:hover {
+  background-color: lightgray;
 }
 
 .dropdown-menu {
@@ -19,6 +18,11 @@ a.nav-link:hover {
 @media screen and (max-width:767px) {
   .nav-pills > li {
     width: 100%;
+  }
+
+  .nav-item a {
+    border: 1px solid white;
+    margin-bottom: 0.5rem;
   }
 
   .btn-group {

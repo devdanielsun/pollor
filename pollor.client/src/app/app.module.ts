@@ -23,6 +23,9 @@ import { UserRegisterComponent } from './user-register/user-register.component';
 import { AlertMessage } from './alert-message/alert-message';
 import { UserAdminProfileComponent } from './user-admin-profile/user-admin-profile.component';
 import { UserLogoutComponent } from './user-logout/user-logout.component';
+import { CreatePollComponent } from './create-poll/create-poll.component';
+import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
+import { PollComponent } from './poll/poll.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { UserLogoutComponent } from './user-logout/user-logout.component';
     UserLoginComponent,
     UserRegisterComponent,
     UserAdminProfileComponent,
-    UserLogoutComponent
+    UserLogoutComponent,
+    CreatePollComponent,
+    DateTimePickerComponent,
+    PollComponent
   ],
   imports: [
     BrowserModule,

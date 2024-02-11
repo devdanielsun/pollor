@@ -19,27 +19,95 @@
           <a class="nav-link text-light" aria-current="page" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="polls">All Polls</a>
         </li>
       </ul>
-      <form class="d-flex p-3" role="search">
+      <!-- <form class="d-flex p-3" role="search">
         <input class="form-control me-2" type="search" placeholder="Search in polls" aria-label="Search" disabled readonly>
         <button class="btn btn-light" type="submit" disabled readonly>Search</button>
-      </form>
+      </form> -->
       <div class="d-flex p-3" role="search">
+
         <!-- User options dropdown -->
         <div class="btn-group">
-          <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             User actions
           </button>
           <ul class="dropdown-menu dropdown-menu-end w-100 p-2">
+
+            <!-- Create poll -->
+            <li *ngIf="isAuthenticated" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="create-poll"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-plus-circle-fill" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  Create poll
+                </p>
+              </a>
+            </li>
+
+            <!-- My polls -->
+            <li *ngIf="isAuthenticated" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="account/polls"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-list" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  My Polls
+                </p>
+              </a>
+            </li>
+
+            <!-- My votes -->
+            <li *ngIf="isAuthenticated" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="account/votes"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-list-check" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  My Votes
+                </p>
+              </a>
+            </li>
+
+            <!-- All Users -->
+            <li *ngIf="isAuthenticated && isAdmin" class="mb-1">
+              <a data-mdb-ripple-init
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                 class="btn btn-outline-dark btn-block w-100"
+                 routerLink="users"
+                 role="button"
+                 data-mdb-ripple-color="dark">
+                <i class="bi bi-people-fill" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  All users
+                </p>
+              </a>
+            </li>
+
+            <li *ngIf="isAuthenticated">
+              <hr class="dropdown-divider">
+            </li>
+
             <!-- User Login -->
             <li *ngIf="!isAuthenticated" class="mb-1">
               <a data-mdb-ripple-init
-                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" 
+                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                  class="btn btn-outline-dark btn-block w-100"
                  routerLink="account/login"
                  role="button"
                  data-mdb-ripple-color="dark">
-                <i class="bi bi-person-lock" style="font-size: 20px;"></i>
+                <i class="bi bi-person-fill-lock" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
                   Login
+                </p>
               </a>
             </li>
             <!-- User Register -->
@@ -50,8 +118,10 @@
                  routerLink="account/register"
                  role="button"
                  data-mdb-ripple-color="dark">
-                <i class="bi bi-person-plus" style="font-size: 20px;"></i>
-                Register
+                <i class="bi bi-person-plus-fill" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  Register
+                </p>
               </a>
             </li>
             <!-- User Profile -->
@@ -59,11 +129,13 @@
               <a data-mdb-ripple-init
                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                  class="btn btn-outline-dark btn-block w-100"
-                 routerLink="account/profile"
+                 routerLink="account"
                  role="button"
                  data-mdb-ripple-color="dark">
-                <i class="bi bi-person-gear" style="font-size: 20px;"></i>
-                User Profile
+                <i class="bi bi-person-lines-fill" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  My Profile
+                </p>
               </a>
             </li>
             <!-- Admin Profile -->
@@ -71,16 +143,20 @@
               <a data-mdb-ripple-init
                  routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                  class="btn btn-outline-dark btn-block w-100"
-                 routerLink="account/admin-profile"
+                 routerLink="account/adminpanel"
                  role="button"
                  data-mdb-ripple-color="dark">
-                <i class="bi bi-person-gear" style="font-size: 20px;"></i>
-                Admin Profile
+                <i class="bi bi-person-fill-gear" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  Admin panel
+                </p>
               </a>
             </li>
+
             <li *ngIf="isAuthenticated">
               <hr class="dropdown-divider">
             </li>
+
             <!-- Logout -->
             <li *ngIf="isAuthenticated" class="mb-1">
               <a data-mdb-ripple-init
@@ -89,8 +165,10 @@
                  routerLink="account/logout"
                  role="button"
                  data-mdb-ripple-color="dark">
-                <i class="bi bi-door-closed" style="font-size: 20px;"></i>
-                Logout
+                <i class="bi bi-door-closed-fill" style="font-size: 20px; float: left;"></i>
+                <p class="m-0" style="float: right;">
+                  Logout
+                </p>
               </a>
             </li>
           </ul>

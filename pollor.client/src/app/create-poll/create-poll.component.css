@@ -1,0 +1,12 @@
+.card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.poll-answers {
+  text-align: right;
+}
+
+.poll-closing-date {
+  text-align: left;
+}

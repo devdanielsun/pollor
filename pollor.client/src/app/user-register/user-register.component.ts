@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../_auth/auth.service';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { AlertMessage } from '../alert-message/alert-message';
 import { ApiService } from '../_api/api.service';
@@ -28,9 +28,10 @@ export class UserRegisterComponent {
       password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.minLength(8)])
     },
-    {
-      validator: this.ConfirmedValidator('password', 'confirmPassword'),
-    });
+      {
+        validator: this.ConfirmedValidator('password', 'confirmPassword')
+      } as AbstractControlOptions
+    );
 
     if (this.authService.isAuthenticated()) {
       this.validateUserAndRedirectToProfile(); // validate and navigate to role profile page

@@ -69,7 +69,28 @@ namespace pollor.Server.Controllers
         {
             try {
                 using (var context = new PollorDbContext()) {
-                    EntityEntry<PollModel> newPoll = context.Polls.Add(poll);
+                    var userClaims = HttpContext.User;
+                    var userId = userClaims.Claims.Where(e => e.Type.Equals("userId")).Select(e => e.Value).SingleOrDefault()!;
+
+                    DateTime now = DateTime.Now;
+                    List<AnswerModel> answers = new List<AnswerModel>();
+                    foreach (var a in poll.Answers) {
+                        answers.Add(new AnswerModel()
+                        {
+                            poll_answer = a.poll_answer,
+                            created_at = now
+                        });
+                    }
+
+                    EntityEntry<PollModel> newPoll = context.Polls
+                        .Add(new PollModel()
+                        {
+                            user_id = int.Parse(userId),
+                            question = poll.question,
+                            Answers = answers,
+                            ending_date = poll.ending_date,
+                            created_at = now
+                        });
                     context.SaveChanges();
 
                     if (newPoll == null) {

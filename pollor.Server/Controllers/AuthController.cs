@@ -37,27 +37,28 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Password must be longer than 8 characters." });
         }
 
-        bool isUsernameAvailable = new PollorDbContext().UserAuthModel.Where(u => u.username!.ToLower().Equals(registerUser.username!.ToLower())).IsNullOrEmpty();
-        if (isUsernameAvailable == false) {
-            return BadRequest(new { message = "Username is already taken, please login or use another username." });
-        }
-
-        bool isEmailAvailable = new PollorDbContext().UserAuthModel.Where(u => u.emailaddress!.ToLower().Equals(registerUser.emailaddress!.ToLower())).IsNullOrEmpty();
-        if (isEmailAvailable == false) {
-            return BadRequest(new { message = "Emailaddress is already taken, please login or use another emailaddress." });
-        }
-
-        var hasher = new PasswordHasher<RegisterModel>();
-        var hashedPass = hasher.HashPassword(registerUser, registerUser.password!);
-        UserAuthModel tempUser = new UserAuthModel() {
-            username = registerUser.username,
-            password = hashedPass,
-            emailaddress = registerUser.emailaddress,
-            created_at = DateTime.Now,
-        };
-
         try
         {
+
+            bool isUsernameAvailable = new PollorDbContext().UserAuthModel.Where(u => u.username!.ToLower().Equals(registerUser.username!.ToLower())).IsNullOrEmpty();
+            if (isUsernameAvailable == false) {
+                return BadRequest(new { message = "Username is already taken, please login or use another username." });
+            }
+
+            bool isEmailAvailable = new PollorDbContext().UserAuthModel.Where(u => u.emailaddress!.ToLower().Equals(registerUser.emailaddress!.ToLower())).IsNullOrEmpty();
+            if (isEmailAvailable == false) {
+                return BadRequest(new { message = "Emailaddress is already taken, please login or use another emailaddress." });
+            }
+
+            var hasher = new PasswordHasher<RegisterModel>();
+            var hashedPass = hasher.HashPassword(registerUser, registerUser.password!);
+            UserAuthModel tempUser = new UserAuthModel() {
+                username = registerUser.username,
+                password = hashedPass,
+                emailaddress = registerUser.emailaddress,
+                created_at = DateTime.Now,
+            };
+
             using (var context = new PollorDbContext())
             {
                 // Create new user
@@ -96,33 +97,42 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Invalid client request" });
         }
 
-        var authUser = new PollorDbContext().UserAuthModel.Where(u => u.username!.ToLower().Equals(loginUser.username!.ToLower())).FirstOrDefault();
-        if (authUser == null) {
-            return Unauthorized(new { message = "Username or password is wrong!" });
-        }
-
-        var hasher = new PasswordHasher<LoginModel>();
-        PasswordVerificationResult passwordIsOk = hasher.VerifyHashedPassword(loginUser, authUser.password!, loginUser.password!);
-
-        if (passwordIsOk == PasswordVerificationResult.Failed) {
-            return Unauthorized(new { message = "Username or password is wrong!" });
-        }
-
-        if (authUser.username == loginUser.username && (passwordIsOk == PasswordVerificationResult.Success || passwordIsOk == PasswordVerificationResult.SuccessRehashNeeded))
+        try
         {
-            if (passwordIsOk == PasswordVerificationResult.SuccessRehashNeeded) {
-                // rehash password and save to DB
-                _logger.LogError("Rehash password and save to DB");
+            var authUser = new PollorDbContext().UserAuthModel.Where(u => u.username!.ToLower().Equals(loginUser.username!.ToLower())).FirstOrDefault();
+            if (authUser == null)
+            {
+                return Unauthorized(new { message = "Username or password is wrong!" });
             }
 
-            int tokenLongerValid = (bool)loginUser.tokenLongerValid ? 14 : 1;// true = 14, false = 1
-            var currentUser = new PollorDbContext().Users.Where(u => u.username!.ToLower().Equals(authUser.username!.ToLower())).FirstOrDefault();
-            var tokenOptions = GetJwtTokenOptions(tokenLongerValid, currentUser!);
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            var hasher = new PasswordHasher<LoginModel>();
+            PasswordVerificationResult passwordIsOk = hasher.VerifyHashedPassword(loginUser, authUser.password!, loginUser.password!);
 
-            return Ok(new AuthenticatedResponse { token = tokenString, user = currentUser});
+            if (passwordIsOk == PasswordVerificationResult.Failed)
+            {
+                return Unauthorized(new { message = "Username or password is wrong!" });
+            }
+
+            if (authUser.username == loginUser.username && (passwordIsOk == PasswordVerificationResult.Success || passwordIsOk == PasswordVerificationResult.SuccessRehashNeeded))
+            {
+                if (passwordIsOk == PasswordVerificationResult.SuccessRehashNeeded)
+                {
+                    // rehash password and save to DB
+                    _logger.LogError("Rehash password and save to DB");
+                }
+
+                int tokenLongerValid = (bool)loginUser.tokenLongerValid ? 14 : 1;// true = 14, false = 1
+                var currentUser = new PollorDbContext().Users.Where(u => u.username!.ToLower().Equals(authUser.username!.ToLower())).FirstOrDefault();
+                var tokenOptions = GetJwtTokenOptions(tokenLongerValid, currentUser!);
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+                return Ok(new AuthenticatedResponse { token = tokenString, user = currentUser });
+            }
+        } catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return Unauthorized(new { message = ex.Message });
         }
-
         return Unauthorized(new { message = "something went wrong" } );
     }
 

@@ -43,7 +43,8 @@
           </label>
         </div>
         <br />
-        <div *ngIf="!loading">
+
+        <div *ngIf="!loading && loginForm.status == 'VALID'">
           <input type="submit" value="Login" class="btn btn-primary" />
         </div>
         <div *ngIf="loading">
@@ -52,7 +53,13 @@
             Loading...
           </button>
         </div>
+        <div *ngIf="loginForm.status != 'VALID'">
+          <button class="btn btn-primary" type="button" disabled>
+            <span class="" role="status" aria-hidden="true"></span>
+            Login
+          </button>
+        </div>
       </form>
-        <div class="bg-danger text-white m-3 p-3" *ngIf="loginError" >{{ loginError }}</div>
+      <div class="bg-danger text-white m-3 p-3" *ngIf="loginError" >{{ loginError }}</div>
     </div>
 </div>

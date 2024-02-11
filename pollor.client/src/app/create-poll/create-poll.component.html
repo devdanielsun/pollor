@@ -1,0 +1,101 @@
+<div class="row">
+  <span class="col-sm-2"></span>
+  <p class="col-sm-8">
+    Create here your new poll. Afterward you can edit the poll in <a routerLink="account/polls">My Polls</a>. Please be sure to at least add two answers. Otherwise what is there to choose, right?
+  </p>
+  <span class="col-sm-2"></span>
+</div>
+<div class="card">
+  <h5 class="card-header p-3">Create a poll</h5>
+  <div class="card-body p-4">
+    <form [formGroup]="createPollForm" (ngSubmit)=" createPoll()" class="container card-text" novalidate>
+      <br />
+
+      <!-- Poll Question -->
+      <div class="form-group form-floating mb-3">
+        <input formControlName="pollQuestion" type="text" placeholder="Poll question" class="form-control" id="floatingPollQuestionInput">
+        <label for="floatingPollQuestionInput">Poll question</label>
+        <!-- Poll Question validation -->
+        <div *ngIf="pollQuestion.invalid && (pollQuestion.dirty || pollQuestion.touched)" class="alert alert-danger">
+          <div *ngIf="pollQuestion.errors?.required">
+            Poll question is required.
+          </div>
+          <div *ngIf="pollQuestion.errors?.maxlength">
+            Poll question cannot be longer than 512
+          </div>
+        </div>
+      </div>
+
+      <!-- Poll Answers -->
+      <div class="poll-answers mb-3">
+        <div formArrayName="pollAnswers">
+          <div class="form-row container" *ngFor="let answerForm of pollAnswers.controls; let i = index">
+            <div class="mb-1" [formGroupName]="i">
+              <div class="row">
+                <div class="col-1"></div>
+                <div class="form-group form-floating ps-0 col-9">
+                  <input formControlName="answer" type="text" placeholder="Poll answer" class="form-control" id="floatingAnswerInput">
+                  <label for="floatingAnswerInput">Poll answer ({{ i+1 }})</label>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm mt-2 mb-3 col-1" (click)="deleteAnswer(i)"><i class="bi bi-trash-fill"></i></button>
+              </div>
+              <div class="row">
+                <!-- Poll Answer validation -->
+                <div class="col-1"></div>
+                <div *ngIf="answerForm.get('answer')?.invalid && (answerForm.get('answer')?.dirty || answerForm.get('answer')?.touched)" class="alert alert-danger col-10">
+                  <div *ngIf="answerForm.get('answer')?.errors?.required">
+                    Poll answer is required.
+                  </div>
+                  <div *ngIf="answerForm.get('answer')?.errors?.maxlength">
+                    Poll answer cannot be longer than 256 charachters.
+                  </div>
+                </div>
+                <div class="col-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Poll Answers validation -->
+        <button type="button" class="btn btn-primary btn-sm mt-2 mb-3" (click)="addAnswer()">Add another answer</button>
+        <div *ngIf="pollAnswers.errors?.tooShortLength" class="alert alert-danger">
+          Make sure to enter at least 2 unique answers
+        </div>
+      </div>
+
+      <!-- Poll Closing Date -->
+      <div class="form-group poll-closing-date">
+        <label for="pollClosingDate">Poll Closing Date</label>
+        <app-date-time-picker formControlName="pollClosingDate" name="pollClosingDate"></app-date-time-picker>
+        <!-- Poll Closing Date validation -->
+        <div class="alert alert-danger" *ngIf="pollClosingDate.errors?.required">
+          Poll Closing Date is required.
+        </div>
+        <div class="alert alert-danger" *ngIf="pollClosingDate.errors?.nonValidDate && !pollClosingDate.errors?.closingDateNotSelectedYet">
+          Poll Closing Date must be a valid date.
+        </div>
+        <div class="alert alert-danger" *ngIf="pollClosingDate.errors?.closingDateIsThePast && !pollClosingDate.errors?.closingDateNotSelectedYet">
+          Poll Closing Date must be a future date.
+        </div>
+      </div>
+
+      <br />
+      <div *ngIf="!loading && createPollForm.status == 'VALID'">
+        <input type="submit" value="Create poll" class="btn btn-primary" />
+      </div>
+      <div *ngIf="loading">
+        <button class="btn btn-primary" type="button" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading...
+        </button>
+      </div>
+      <div *ngIf="createPollForm.status != 'VALID'">
+        <button class="btn btn-primary" type="button" disabled>
+          Create poll
+        </button>
+      </div>
+    </form>
+    <div class="bg-danger text-white m-3 p-3" *ngIf="createPollError">
+      {{ createPollError }}
+    </div>
+  </div>
+</div>
