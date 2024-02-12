@@ -4,7 +4,7 @@
     <br />
     <h2 class="py-2" *ngIf="poll">{{ poll.question }}</h2>
   </div>
-  <div class="card-body  p-2  p-md-4">
+  <div class="card-body p-2 p-md-4">
 
     <p *ngIf="!pollLoaded"><em [style.color]="pollLoadingColor">{{ pollLoadingMsg }}</em></p>
 

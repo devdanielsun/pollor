@@ -5,10 +5,10 @@
   </p>
   <span class="col-sm-2"></span>
 </div>
-<div class="card">
+<div class="card col col-md-6 mx-auto">
   <h5 class="card-header p-3">Create a poll</h5>
-  <div class="card-body p-4">
-    <form [formGroup]="createPollForm" (ngSubmit)=" createPoll()" class="container card-text" novalidate>
+  <div class="card-body p-2 p-md-4">
+    <form [formGroup]="createPollForm" (ngSubmit)=" createPoll()" class="container card-text p-0" novalidate>
       <br />
 
       <!-- Poll Question -->
@@ -33,11 +33,11 @@
             <div class="mb-1" [formGroupName]="i">
               <div class="row">
                 <div class="col-1"></div>
-                <div class="form-group form-floating ps-0 col-9">
+                <div class="form-group form-floating ps-0 col-9 mx-auto">
                   <input formControlName="answer" type="text" placeholder="Poll answer" class="form-control" id="floatingAnswerInput">
                   <label for="floatingAnswerInput">Poll answer ({{ i+1 }})</label>
                 </div>
-                <button type="button" class="btn btn-danger btn-sm mt-2 mb-3 col-1" (click)="deleteAnswer(i)"><i class="bi bi-trash-fill"></i></button>
+                <button type="button" class="btn btn-danger btn-sm m-1 p-1 col-1 mx-auto" (click)="deleteAnswer(i)"><i class="bi bi-trash-fill"></i></button>
               </div>
               <div class="row">
                 <!-- Poll Answer validation -->
