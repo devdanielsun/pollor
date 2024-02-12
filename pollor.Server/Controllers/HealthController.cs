@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace pollor.Server.Controllers
 {
@@ -11,7 +9,12 @@ namespace pollor.Server.Controllers
         [HttpGet]
         public IActionResult GetHealth()
         {
-            return Ok("healthy");
+            var healthyObject = new {
+                healthy = "OK",
+                ping = "Ping successful"
+            };
+
+            return Ok(healthyObject);
         }
     }
 }
