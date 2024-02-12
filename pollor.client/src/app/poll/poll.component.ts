@@ -67,7 +67,7 @@ export class PollComponent {
             a.votes.forEach((v: IVote) => {
               if (v.ipv4_address == this.ipv4 || v.ipv6_address == this.ipv6) {
                 this.alreadyVoted = true;
-                this.voteMsg = this.voteSucessMsg + ` You have voted on <i class="bg-success text-white"><b>${ a.poll_answer }</b></i>`;
+                this.voteMsg = this.voteSucessMsg + ` You have voted on <i><b>${ a.poll_answer }</b></i>`;
               }
             });
           });
