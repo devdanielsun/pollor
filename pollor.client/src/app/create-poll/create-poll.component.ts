@@ -126,7 +126,6 @@ export class CreatePollComponent {
       const newAnswers: ICreateAnswer[] = [];
 
       this.createPollForm.value.pollAnswers.forEach(function (value: any) {
-        console.log(value.answer);
         newAnswers.push(
           {
               poll_answer: value.answer
