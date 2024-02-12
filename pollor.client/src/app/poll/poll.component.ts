@@ -72,14 +72,14 @@ export class PollComponent {
             });
           });
 
-          if (!this.alreadyVoted) {
+          this.poll.ending_date = new Date(this.poll.ending_date);
+          this.pollLoaded = true;
+          this.pollHasEnded = this.poll.ending_date.getTime() < Date.now();
+
+          if (!this.alreadyVoted && this.pollHasEnded) {
             this.voteMsg = `You missed this poll.`;
           }
 
-          this.poll.ending_date = new Date(this.poll.ending_date);
-
-          this.pollLoaded = true;
-          this.pollHasEnded = this.poll.ending_date.getTime() < Date.now();
         },
         error: (err) => {
           const msg = ((err.error && err.error.message) ? err.error.message : (err.error.title) ? err.error.title : err.message);
