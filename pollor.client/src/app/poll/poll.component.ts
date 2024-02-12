@@ -23,6 +23,8 @@ export class PollComponent {
   public pollLoadingMsg: string = "Loading poll...";
   public pollLoadingColor: string = "";
 
+  public pollHasEnded: boolean = false;
+
   public voteCastLoading: boolean = false;
   public voteCastSuccess: boolean = false;
   public voteMsg: string = "";
@@ -65,14 +67,19 @@ export class PollComponent {
             a.votes.forEach((v: IVote) => {
               if (v.ipv4_address == this.ipv4 || v.ipv6_address == this.ipv6) {
                 this.alreadyVoted = true;
-                this.voteMsg = this.voteSucessMsg;
-              } else {
-                this.alreadyVoted = false;
+                this.voteMsg = this.voteSucessMsg + ` You have voted on <i class="bg-success text-white"><b>${ a.poll_answer }</b></i>`;
               }
             });
           });
 
+          if (!this.alreadyVoted) {
+            this.voteMsg = `You missed this poll.`;
+          }
+
+          this.poll.ending_date = new Date(this.poll.ending_date);
+
           this.pollLoaded = true;
+          this.pollHasEnded = this.poll.ending_date.getTime() < Date.now();
         },
         error: (err) => {
           const msg = ((err.error && err.error.message) ? err.error.message : (err.error.title) ? err.error.title : err.message);
@@ -176,7 +183,10 @@ export class PollComponent {
         this.voteCastLoading = false;
         this.voteCastSuccess = true;
         // reload page, so that cast vote buttons will be grayed out as anonymous user has voted
-        this.router.navigate(['poll/', { relativeTo: this.route }]);
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate([currentUrl]);
+        });
       },
       error: (err) => {
         console.error(err);
