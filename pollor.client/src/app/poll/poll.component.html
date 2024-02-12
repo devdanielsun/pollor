@@ -38,9 +38,9 @@
         </tbody>
       </table>
       <div class="my-4">
-        <span *ngIf="voteCastLoading || (voteMsg && !alreadyVoted && pollHasEnded)" class="bg-info text-white p-3" [innerHTML]="voteMsg"></span>
-        <span *ngIf="voteMsg && !voteCastSuccess && !voteCastLoading  && !alreadyVoted && !pollHasEnded" class="bg-danger text-white p-3" [innerHTML]="voteMsg"></span>
-        <span *ngIf="voteMsg && ((voteCastSuccess  && !voteCastLoading) || alreadyVoted)" class="bg-success text-white p-3" [innerHTML]="voteMsg"></span>
+        <div *ngIf="voteCastLoading || (voteMsg && !alreadyVoted && pollHasEnded)" class="bg-info text-white p-3" [innerHTML]="voteMsg"></div>
+        <div *ngIf="voteMsg && !voteCastSuccess && !voteCastLoading  && !alreadyVoted && !pollHasEnded" class="bg-danger text-white p-3" [innerHTML]="voteMsg"></div>
+        <div *ngIf="voteMsg && ((voteCastSuccess  && !voteCastLoading) || alreadyVoted)" class="bg-success text-white p-3" [innerHTML]="voteMsg"></div>
       </div>
     </div>
   </div>
