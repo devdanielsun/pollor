@@ -28,7 +28,6 @@ export class UserLoginComponent {
     });
 
     if (this.authService.isAuthenticated()) {
-      console.log("validate user");
       this.validateUserAndRedirectToProfile(); // validate and navigate to role profile page
     }
   }

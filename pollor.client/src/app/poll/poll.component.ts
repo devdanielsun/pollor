@@ -173,12 +173,9 @@ export class PollComponent {
       this.alertMessage.addErrorAlert("Failed to get IP Address", `Ipv4(${ this.ipv4 }) and ipv6 (${ this.ipv6 })`);
     }
 
-    console.log(vote);
-
     // Send the vote to the server
     this.voteService.castVote(vote).subscribe({
       next: (response) => {
-        console.log(response);
         this.voteMsg = this.voteSucessMsg;
         this.voteCastLoading = false;
         this.voteCastSuccess = true;
