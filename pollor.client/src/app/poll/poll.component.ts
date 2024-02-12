@@ -65,7 +65,7 @@ export class PollComponent {
 
           this.poll.answers.forEach((a: IAnswer) => {
             a.votes.forEach((v: IVote) => {
-              if (v.ipv4_address == this.ipv4 || v.ipv6_address == this.ipv6) {
+              if ((v.ipv4_address != null && v.ipv4_address == this.ipv4) || (v.ipv6_address != null && v.ipv6_address == this.ipv6)) {
                 this.alreadyVoted = true;
                 this.voteMsg = this.voteSucessMsg + ` You have voted on <i><b>${ a.poll_answer }</b></i>`;
               }
