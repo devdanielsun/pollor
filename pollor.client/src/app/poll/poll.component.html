@@ -1,16 +1,18 @@
-<div class="card">
-  <h5 class="card-header p-3">Cast you vote</h5>
-  <div class="card-body p-4">
+<div class="card col col-md-6 mx-auto">
+  <div class="card-header p-3">
+    Cast you vote:
+    <br />
+    <h2 class="py-2" *ngIf="poll">{{ poll.question }}</h2>
+  </div>
+  <div class="card-body  p-2  p-md-4">
 
     <p *ngIf="!pollLoaded"><em [style.color]="pollLoadingColor">{{ pollLoadingMsg }}</em></p>
 
     <p *ngIf="pollLoaded && poll == null"><em>No poll data found</em></p>
 
-    <div *ngIf="poll && poll.answers.length > 0" class="table table-sm table-bordered table-hover w-auto">
+    <div *ngIf="poll && poll.answers.length > 0" class="table-responsive">
 
-      <h4>{{ poll.question }}</h4>
-
-      <table class="table table-bordered table-sm table-hover w-50">
+      <table class="table table-bordered table-sm table-hover w-auto">
         <thead>
           <tr>
             <th scope="col" class="w-50">Answer</th>

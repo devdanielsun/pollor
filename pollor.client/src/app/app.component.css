@@ -19,9 +19,8 @@ th, td {
 #page-container {
     position: relative;
     min-height: 100vh;
-  }
+}
   
 #content-wrap {
-    padding: 2.5rem;
-    padding-bottom: 12.5rem;            /* Footer height, must be same or higher as in footer.component.css */
+    padding-bottom: 15rem;            /* Footer height, must be same or higher as in footer.component.css */
 }

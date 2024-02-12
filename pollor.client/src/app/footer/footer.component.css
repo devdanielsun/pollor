@@ -2,6 +2,6 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 10rem;            /* Footer height, must be same or lower as in app.component.css */
+  height: 12rem;            /* Footer height, must be same or lower as in app.component.css */
   z-index: 50;
 }
