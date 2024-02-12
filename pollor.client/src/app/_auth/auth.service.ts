@@ -57,6 +57,5 @@ export class AuthService {
   public navigateDashboard(): void {
     const dashboardRoute = this.getRole().toLowerCase() === 'admin' ? '/account/adminpanel' : '/account';
     this.router.navigate([dashboardRoute]);
-    console.log(`${this.getRole()} dashboard route`);
   }
 }

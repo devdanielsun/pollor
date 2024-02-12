@@ -12,11 +12,11 @@ const environment = argv.environment;
 function writeFileUsingFS(targetPath, environmentFileContent) {
   writeFile(targetPath, environmentFileContent, function (err) {
     if (err) {
-      console.log(err);
+      console.error(err);
     }
-    if (environmentFileContent !== '') {
-      console.log(`wrote variables to ${targetPath}`);
-    }
+    // if (environmentFileContent !== '') {
+    //   console.log(`wrote variables to ${targetPath}`);
+    // }
   });
 }
 

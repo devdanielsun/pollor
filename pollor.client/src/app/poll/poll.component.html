@@ -23,27 +23,24 @@
             <td scope="row">{{ answer.poll_answer }}</td>
             <td scope="row">{{ answer.votes.length }}</td>
             <td scope="row">
-              <div *ngIf="!alreadyVoted">
+              <div *ngIf="!alreadyVoted && !pollHasEnded">
                 <button class="btn btn-primary" (click)="castVote(answer.id)" *ngIf="!voteCastLoading">Cast vote</button>
                 <button class="btn btn-primary" disabled *ngIf="voteCastLoading">Cast vote</button>
               </div>
-              <div *ngIf="alreadyVoted">
+              <div *ngIf="alreadyVoted && !pollHasEnded">
                 You have voted!
+              </div>
+              <div *ngIf="pollHasEnded">
+                Poll is closed.
               </div>
             </td>
           </tr>
         </tbody>
       </table>
       <div class="my-4">
-        <span *ngIf="voteCastLoading" class="bg-info text-white p-3">
-          {{ voteMsg }}
-        </span>
-        <span *ngIf="voteMsg && !voteCastSuccess && !voteCastLoading  && !alreadyVoted" class="bg-danger text-white p-3">
-          {{ voteMsg }}
-        </span>
-        <span *ngIf="voteMsg && ((voteCastSuccess  && !voteCastLoading) || alreadyVoted)" class="bg-success text-white p-3">
-          {{ voteMsg }}
-        </span>
+        <span *ngIf="voteCastLoading || (voteMsg && !alreadyVoted && pollHasEnded)" class="bg-info text-white p-3" [innerHTML]="voteMsg"></span>
+        <span *ngIf="voteMsg && !voteCastSuccess && !voteCastLoading  && !alreadyVoted && !pollHasEnded" class="bg-danger text-white p-3" [innerHTML]="voteMsg"></span>
+        <span *ngIf="voteMsg && ((voteCastSuccess  && !voteCastLoading) || alreadyVoted)" class="bg-success text-white p-3" [innerHTML]="voteMsg"></span>
       </div>
     </div>
   </div>

@@ -25,10 +25,13 @@ namespace pollor.Server.Controllers
         {
             try {
                 using (var context = new PollorDbContext()) {
+                    var currentDate = DateTime.Now;
                     List<PollModel> polls = context.Polls
                         .Include(p => p.Answers)
                             .ThenInclude(a => a.Votes)
-                        .ToList();
+                            .OrderBy(p => EF.Functions.DateDiffSecond(currentDate, p.ending_date) >= 0 ? EF.Functions.DateDiffSecond(currentDate, p.ending_date) : int.MaxValue)
+                            .ThenBy(p => EF.Functions.DateDiffSecond(p.ending_date, currentDate))
+                            .ToList();
                     if (polls.IsNullOrEmpty()) {
                         return NotFound(new { message = "No records found" });
                     }
