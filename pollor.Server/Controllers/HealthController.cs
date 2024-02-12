@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.AspNetCore.Mvc;
-using pollor.Server.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using pollor.Server.Services;
 
 namespace pollor.Server.Controllers
