@@ -35,18 +35,11 @@ builder.Services.AddCors(options =>
 
 /* get secret private jwt key value */
 String secretJwtKey = Environment.GetEnvironmentVariable("SECRET_JWT_KEY")!;
-
-/* If values are null or empty, give error message that values are missing in .env */
-if (secretJwtKey == null)
-{
-    throw new InvalidOperationException("secretJwtKey contains no value. Make sure SECRET_JWT_KEY is set in .env");
-}
-
 String jwtTokenDomain = Environment.GetEnvironmentVariable("JWT_TOKEN_DOMAIN")!;
 /* If values are null or empty, give error message that values are missing in .env */
-if (jwtTokenDomain == null)
+if (secretJwtKey == null || jwtTokenDomain == null)
 {
-    throw new InvalidOperationException("jwtTokenDomain contains no value. Make sure JWT_TOKEN_DOMAIN is set in .env");
+    throw new InvalidOperationException("JWT environment values contains no value. Make sure SECRET_JWT_KEY and JWT_TOKEN_DOMAIN are set in .env");
 }
 
 /* Add JWT authentication */
