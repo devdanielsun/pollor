@@ -31,7 +31,7 @@ Open the CLI and nagivate to '/pollor.Server'. Execute these commands to start b
 Open '/pollor.client' in Visual Studo Code. Execute these commands:
 
 1. `npm i`
-2. `npm run dev`
+2. `npm start`
 
 ## Start with Docker containers
 
