@@ -18,17 +18,17 @@ Make sure the .env files are made and contain the correct values, and the mysql 
 
 ### Start backend project (method 1) through Microsoft Visual Studio 2022
 
-Open the folder '/pollor.Backend' in the VS Studio. Select the project and hit `> Start`
+Open the folder '/pollor.Server' in the VS Studio. Select the project and hit `> Start`
 
 ### Start backend project (method 2) manually through CLI
  
-Open the CLI and nagivate to '/pollor.Backend'. Execute these commands to start both the server and client.
+Open the CLI and nagivate to '/pollor.Server'. Execute these commands to start both the server and client.
  
 1. `cd pollor.Server`
 2. `dotnet run --launch-profile https`
 
 ### Start frontend on its own
-Open /pollor.Frontend in Visual Studo Code. Execute these commands:
+Open '/pollor.client' in Visual Studo Code. Execute these commands:
 
 1. `npm i`
 2. `npm run dev`
