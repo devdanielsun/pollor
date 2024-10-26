@@ -33,6 +33,10 @@ Open '/pollor.client' in Visual Studo Code. Execute these commands:
 1. `npm i`
 2. `npm run dev`
 
+## Start with Docker containers
+
+Yet to be implemented...
+
 ---
 
 If that doesn't start up the backend and frontend, please take a look in:
