@@ -12,17 +12,26 @@ A poll system where users can create polls and vote anonymous on polls. Tech sta
 * node.js `18.x.x` >= `21.3.0`
 * .NET `8.x`
 
-### Start project through Microsoft Visual Studio 2022
+## Run project on local machine
 
-Clone the project and open the folder in the program. And just hit `> Start`
-
-### Start project manually through CLI
- 
 Make sure the .env files are made and contain the correct values, and the mysql database is running.
-Next to that those two commands should be enough the start both the server and client.
+
+### Start backend project (method 1) through Microsoft Visual Studio 2022
+
+Open the folder '/pollor.Backend' in the VS Studio. Select the project and hit `> Start`
+
+### Start backend project (method 2) manually through CLI
+ 
+Open the CLI and nagivate to '/pollor.Backend'. Execute these commands to start both the server and client.
  
 1. `cd pollor.Server`
 2. `dotnet run --launch-profile https`
+
+### Start frontend on its own
+Open /pollor.Frontend in Visual Studo Code. Execute these commands:
+
+1. `npm i`
+2. `npm run dev`
 
 ---
 
