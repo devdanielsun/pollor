@@ -18,32 +18,19 @@ namespace pollor.Server.Controllers
         [HttpGet]
         public IActionResult GetHealth()
         {
-            int usersSize = 0;
-            int pollsSize = 0;
-            int answersSize = 0;
-            int votesSize = 0;
-
             try {
                 using (var context = new PollorDbContext()) {
-                    usersSize = context.Users.Count();
-                    pollsSize = context.Polls.Count();
-                    answersSize = context.Answers.Count();
-                    votesSize = context.Votes.Count();
+                    return Ok(new {
+                        healthy = "OK",
+                        ping = "Ping successful",
+                        usersSize = context.Users.Count(),
+                    });
                 }
             }
             catch(Exception ex) {
                 _logger.LogError(ex.Message);
                 return StatusCode(500, new { message = ex.Message});
             }
-
-            return Ok(new {
-                healthy = "OK",
-                ping = "Ping successful",
-                usersSize,
-                pollsSize,
-                answersSize,
-                votesSize,
-            });
         }
     }
 }
