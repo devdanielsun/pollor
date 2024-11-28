@@ -11,6 +11,7 @@ namespace pollor.Server.Models
         }
         
         public int poll_id { get; set; }
+
         [StringLength(256)]
         public string? poll_answer { get; set; }
         

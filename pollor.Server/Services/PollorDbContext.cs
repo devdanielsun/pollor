@@ -21,17 +21,13 @@ namespace pollor.Server.Services {
             string dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD")!;
 
             bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
-            if (isDevelopment) {
-                connectionString = string.Format("Server={0};Database={1};User ID={2};Password={3};TrustServerCertificate={4};", dbServer, dbName, dbUID, dbPassword, true);
-            } else { // Production
-                connectionString = string.Format("Server={0};Initial Catalog={1};User ID={2};Password={3};Persist Security Info={4};TrustServerCertificate={5};MultipleActiveResultSets={6};Encrypt={7};Connection Timeout={8};",
-                    dbServer, dbName, dbUID, dbPassword, false, false, false, true, 30);
-            }
+
+            connectionString = string.Format("Server={0};Database={1};User={2};Password={3};Port={4};SslMode={5};", dbServer, dbName, dbUID, dbPassword, 3306, "None"); // "Required");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseMySQL(connectionString);
         }
     }
 }
